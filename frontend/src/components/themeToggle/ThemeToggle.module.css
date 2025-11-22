@@ -1,0 +1,106 @@
+.switch {
+  --margin-x: calc(3px * var(--scale));
+  --width-slider: calc(24px * var(--scale));
+  --width-switch: calc((var(--width-slider) * 2));
+
+  position: relative;
+  display: inline-block;
+  width: var(--width-switch);
+  height: calc(var(--width-slider) + var(--margin-x)*2);
+  
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background-color: var(--bg-color-3);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.4s ease;
+  overflow: hidden;
+  box-shadow: -1px 1px 1px 0px rgba(0, 0, 0, 0.5), -1px 1px 5px 0px rgba(0, 0, 0, 0.5);
+}
+
+/* A bolinha */
+.slider::before {
+  content: "";
+  position: absolute;
+  bottom: var(--margin-x);
+  left: var(--margin-x);
+  height: var(--width-slider);
+  width: var(--width-slider);
+  background-color: var(--bg-color-1);
+  border-radius: 50%;
+  transition: transform 0.4s ease, background-color 0.4s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+/* Ícone dentro da bolinha */
+.iconWrapper {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--width-slider) - var(--margin-x)*3);
+  pointer-events: none;
+  transition: transform 0.4s ease;
+}
+
+.icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease, transform 0.5s ease;
+}
+
+.sun {
+  color: #facc15;
+  opacity: 1;
+  animation: spin 0.6s ease;
+}
+
+.moon {
+  color: #bec7d2;
+  opacity: 1;
+  animation: fadeIn 0.6s ease;
+}
+
+@keyframes spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(180deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Quando ativado (dark mode) */
+input:checked + .slider::before {
+  transform: translateX(calc(var(--width-switch) / 2 - var(--margin-x)*2));
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+input:checked + .slider .iconWrapper {
+  transform: translateX(calc(var(--width-switch) / 2 - var(--margin-x)*2));
+}

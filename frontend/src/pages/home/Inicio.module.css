@@ -1,0 +1,40 @@
+.baner{
+  height: 400px;
+  width: 100%;
+}
+
+.baner-img{
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: url("/home-baner.jpg") center center / cover;
+
+  height: 100%;
+}
+
+.svg-airplane{
+  position: absolute;
+  transform: scale(1.2, 1);
+  color: var(--bg-color-2);
+
+  margin-left: -3rem;
+
+  z-index: 0;
+}
+
+.titulo{
+  text-align: center;
+  font-size: 3rem;
+  letter-spacing: -.1rem;
+  color: var(--primary-light);
+
+  width: clamp(400px, 60vw, 700px);
+
+  margin-top: -2rem;
+
+  z-index: 0;
+}

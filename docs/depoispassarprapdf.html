@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Relatório — Sistema de Gestão da Produção de Aeronaves (Aerocode)</title>
+  <style>
+    :root{--bg:#f7f8fb;--muted:#666;--accent:#0b67d0}
+    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:var(--bg); color:#111; line-height:1.5}
+    .container{max-width:980px;margin:28px auto;padding:28px}
+    header{display:flex;align-items:center;gap:18px;margin-bottom: 20px;}
+    header img.logo{width:72px;height:72px;border-radius:12px;object-fit:cover}
+    h1{font-size:1.6rem;margin:0}
+    .meta{color:var(--muted);margin-top:6px}
+    h2{margin-top:0}
+    .toc ul{padding-left:18px}
+    pre{background:#0f1724;color:#e6eef8;padding:12px;border-radius:8px;overflow:auto}
+    footer{margin-top:26px;color:var(--muted);font-size:0.9rem;text-align:center}
+    .badge{display:inline-block;background:#eef6ff;color:var(--accent);padding:6px 10px;border-radius:999px;font-weight:600;font-size:0.85rem}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media(max-width:780px){.two-col{grid-template-columns:1fr}}
+    .flow-svg{width:100%;height:auto}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>Relatório — Sistema de Gestão da Produção de Aeronaves (Aerocode)</h1>
+      </div>
+    </header>
+
+    <section>
+      <h2>Sumário</h2>
+      <nav class="toc">
+        <ul>
+          <li>Introdução</li>
+          <li>Objetivos</li>
+          <li>Público-alvo</li>
+          <li>Requisitos (Funcionais e Não Funcionais)</li>
+          <li>Hierarquia de Informações</li>
+          <li>Fluxo de Navegação</li>
+          <li>Wireframes (Figuras)</li>
+          <li>Conclusão</li>
+        </ul>
+      </nav>
+    </section>
+
+    <section id="introducao">
+      <h2>1. Introdução</h2>
+      <p>Este documento reúne o entendimento do produto, requisitos e orientações de informação e navegação para a construção da primeira interface gráfica (GUI) do sistema de gestão da produção de aeronaves da Aerocode. O objetivo é transformar a aplicação atual em linha de comando (CLI) em uma SPA (Single Page Application) em <strong>React</strong>, priorizando usabilidade, segurança e escalabilidade para clientes corporativos.</p>
+    </section>
+
+    <section id="objetivos">
+      <h2>2. Objetivos do Projeto</h2>
+      <ul>
+        <li>Modernizar a interface do sistema (migração CLI → GUI).</li>
+        <li>Reduzir a curva de aprendizado de novos usuários.</li>
+        <li>Permitir gerenciamento claro de funcionários, aeronaves, peças, etapas e testes.</li>
+        <li>Fornecer controles de permissão por perfil (Administrador, Engenheiro, Operador).</li>
+        <li>Preparar o produto para adoção por grandes fabricantes aeronáuticas.</li>
+      </ul>
+    </section>
+
+    <section id="publico">
+      <h2>3. Público‑alvo</h2>
+      <div class="two-col">
+        <div>
+          <h3>A Empresa</h3>
+          <p>Grandes fabricantes de aeronaves e empresas do setor aeroespacial que gerenciam múltiplos projetos, equipes grandes e processos de produção complexos (ex.: Embraer, Boeing, Airbus, Bombardier, Lockheed Martin).</p>
+        </div>
+        <div>
+          <h3>Usuários Principais</h3>
+          <ul>
+            <li><strong>Administrador (Adm)</strong>: responsável por gerir contas e permissões; acesso total ao sistema.</li>
+            <li><strong>Engenheiro</strong>: engenheiro de produção / aeronáutico — gerencia aeronaves, peças, etapas e testes.</li>
+            <li><strong>Operador</strong>: usuários de chão de fábrica — atualizam o status de peças e etapas; permissões restritas.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="requisitos">
+      <h2>4. Requisitos</h2>
+      <h4>4.1 Requisitos Funcionais</h4>
+      <ol>
+        <li>Login com verificação de credenciais e sessão (perfis: Adm, Engenheiro, Operador).</li>
+        <li>CRUD de funcionários (Adm).</li>
+        <li>CRUD de aeronaves, peças, etapas e testes.</li>
+        <li>Alteração de status de peças e etapas.</li>
+      </ol>
+
+      <h4>4.2 Requisitos Não‑Funcionais</h4>
+      <ul>
+        <li>Aplicação como SPA em <strong>React</strong> (protótipo navegável).</li>
+        <li>Segurança: controle de sessão, segregação de perfil e proteção de dados sensíveis.</li>
+        <li>Compatibilidade com Windows 10+ e Ubuntu 24.04+.</li>
+      </ul>
+    </section>
+
+    <section id="hierarquia">
+      <h2>5. Hierarquia de Informações</h2>
+      <p>A hierarquia de informações determina o que aparece primeiro e com maior destaque na interface. Abaixo segue a proposta, do mais importante ao menos destacado:</p>
+      <ol>
+        <li><strong>Identificação do sistema / usuário</strong> (nome da empresa, Menu de navegação, Sair) — topo.</li>
+        <li><strong>Área de Conteúdo</strong> — lista / detalhe / formulário.</li>
+        <li><strong>Controles primários</strong> (Criar, Detalhes) — próximos ao conteúdo principal.</li>
+        <li><strong>Filtros e Pesquisa</strong> — colocados acima das listas para fácil acesso.</li>
+        <li><strong>Contexto</strong> — para orientar a posição dentro da hierarquia (ex.: Home / Aeronaves / A320-001).</li>
+        <li><strong>Informações secundárias</strong> (rodapé).</li>
+      </ol>
+
+      <p>Observação sobre permissões: elementos e ações devem aparecer conforme o perfil do usuário. Por exemplo, o botão "Cadastrar Aeronave" só será visível para o <em>Adm</em> e o <em>Engenheiro</em>.</p>
+    </section>
+
+    <section id="fluxo" style="margin-top: 90px;">
+      <h2>6. Fluxo de Navegação (User Flow)</h2>
+      <p>Fluxo básico dos usuários ao acessar o sistema:</p>
+      <ol>
+        <li>Login → validação de credenciais</li>
+        <li>Home / Inicio</li>
+        <ol style="list-style-type:upper-roman">
+          <li>Seleção da seção (Aeronaves)</li>
+          <ul>
+            <li>Cadastrar aeronave</li>
+          </ul>
+          <li>Lista de aeronaves → seleção de aeronave para ver Detalhes</li>
+          <li>lista de peças, etapas e testes → ações possíveis (Adicionar, Avançar Etapa, Atualizar Status)</li>
+        </ol>
+        <br>
+        <ol style="list-style-type:upper-roman">
+          <li>Seleção da seção (Funcionários)</li>
+          <ul>
+            <li>Cadastrar funcionario</li>
+          </ul>
+          <li>Lista de funcionários → seleção de funcionário para ver Detalhes</li>
+        </ol>
+        <li>Logout</li>
+      </ol>
+
+      <p>Diagrama de fluxo de usuário:</p>
+      <img style="max-width: 100%; margin-bottom: 20px;" src="av2 fluxo de usuario(comprimido).jpg" alt="Diagrama do Fluxo de Usuário">
+    </section>
+
+    <section id="wireframes" style="margin-top: 250px;">
+      <h2>7. Wireframes</h2>
+      <img style="max-width: 100%; margin-bottom: 20px;" src="av2 wireframes(comprimido).jpg" alt="Wireframe" />
+    </section>
+
+    <section id="conclusao" style="margin-top: 20px;">
+      <h2>8. Conclusão</h2>
+      <p>O protótipo e o documento colocam as bases para a transformação do sistema CLI em uma aplicação web moderna. O foco nas permissões por perfil, na hierarquia de informação e nos fluxos de usuário garantirá que o produto atenda tanto às necessidades operacionais do chão de fábrica quanto às demandas de gestão e auditoria das equipes de engenharia e administração.</p>
+    </section>
+
+    <footer>
+      <div style="margin-top:6px" class="badge">Aerocode • GUI — SPA Prototype</div>
+    </footer>
+  </div>
+</body>
+</html>

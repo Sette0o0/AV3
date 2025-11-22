@@ -1,0 +1,192 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+
+*, *::after, *::before{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* cores */
+  --preto-1: hsl(0 0 5);
+  --preto-2: hsl(0 0 10);
+  --preto-3: hsl(0 0 15);
+  --preto-4: hsl(0 0 20);
+  --preto-5: hsl(0 0 25);
+
+  --branco-1: hsl(0 0 95);
+  --branco-2: hsl(0 0 90);
+  --branco-3: hsl(0 0 85);
+  --branco-4: hsl(0 0 80);
+  --branco-5: hsl(0 0 75);
+
+  --primary-color: hsl(232, 95%, 58%);
+
+  --secondary-color: hsl(124, 61%, 27%);
+  
+  --primary-light: color-mix(in srgb, var(--primary-color), white 15%);
+  --primary-dark: color-mix(in srgb, var(--primary-color), black 15%);
+  --primary-lighter: color-mix(in srgb, var(--primary-color), white 30%);
+  --primary-darker: color-mix(in srgb, var(--primary-color), black 30%);
+  --primary-even-lighter: color-mix(in srgb, var(--primary-color), white 50%);
+  --primary-even-darker: color-mix(in srgb, var(--primary-color), black 50%);
+
+  --secondary-light: color-mix(in srgb, var(--secondary-color), white 15%);
+  --secondary-dark: color-mix(in srgb, var(--secondary-color), black 15%);
+  --secondary-lighter: color-mix(in srgb, var(--secondary-color), white 30%);
+  --secondary-darker: color-mix(in srgb, var(--secondary-color), black 30%);
+  --secondary-even-lighter: color-mix(in srgb, var(--secondary-color), white 50%);
+  --secondary-even-darker: color-mix(in srgb, var(--secondary-color), black 50%);
+
+  /* light */
+  --bg-color-1: var(--branco-1);
+  --bg-color-2: var(--branco-2);
+  --bg-color-3: var(--branco-3);
+  --bg-color-4: var(--branco-4);
+  --bg-color-5: var(--branco-5);
+
+  --text-color: var(--preto-2);
+  --text-muted: var(--preto-4);
+
+  --bs-body-bg: var(--bg-color-2);
+  --bs-body-color: var(--text-color);
+  --bs-primary: var(--primary-color);
+  --bs-primary-rgb: 64, 83, 248;
+  --bs-link-color: var(--primary-color);
+  --bs-link-hover-color: color-mix(in srgb, var(--primary-color), black 15%);
+  
+  --bs-border-color: var(--bg-color-5);
+}
+
+[data-theme="dark"] {
+  --bg-color-1: var(--preto-1);
+  --bg-color-2: var(--preto-2);
+  --bg-color-3: var(--preto-3);
+  --bg-color-4: var(--preto-4);
+  --bg-color-5: var(--preto-5);
+
+  --text-color: var(--branco-2);
+  --text-muted: var(--branco-4);
+
+  --bs-body-bg: var(--bg-color-2);
+  --bs-body-color: var(--text-color);
+
+  --bs-border-color: var(--bg-color-5);
+  --bs-emphasis-color: white;
+  --bs-emphasis-color-rgb: 255, 255, 255;
+  --bs-table-accent-bg: var(--bg-color-4);
+
+  --bs-btn-close-filter: invert(1)
+  
+}
+
+body {
+  background-color: var(--bg-color-2);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+
+  min-height: 100vh;
+  width: 100%;
+
+  font-family: "Lexend", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+h1, h2, h3, h4, h5, h6{
+  margin: 0;
+}
+
+.page{
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  min-height: 100vh;
+}
+
+ul{
+  list-style: none;
+}
+
+a{
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+/* Sobreescrever bootstrap */
+.container-fluid {
+  --bs-gutter-x: 3rem;
+}
+
+.row {
+  --bs-gutter-x: 0;
+  --bs-gutter-y: 0;
+}
+
+.form-label{
+  font-weight: 600;
+}
+.form-control:focus,
+.form-select:focus{
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 .25rem color-mix(in srgb, var(--primary-color) 25%, transparent);;
+}
+.form-control::placeholder {
+  color: var(--text-muted);
+}
+
+.btn{
+  --bs-btn-disabled-opacity: .8;
+}
+
+.btn-primary{
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--primary-color);
+  --bs-btn-border-color: var(--primary-color);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--primary-dark);
+  --bs-btn-hover-border-color: var(--primary-darker);
+  --bs-btn-focus-shadow-rgb: 49, 132, 253;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--primary-darker);
+  --bs-btn-active-border-color: var(--primary-even-darker);
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: var(--primary-darker);
+  --bs-btn-disabled-border-color: var(--primary-darker);
+}
+
+.btn-secondary{
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--secondary-color);
+  --bs-btn-border-color: var(--secondary-color);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--secondary-dark);
+  --bs-btn-hover-border-color: var(--secondary-darker);
+  --bs-btn-focus-shadow-rgb: 49, 132, 253;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--secondary-darker);
+  --bs-btn-active-border-color: var(--secondary-even-darker);
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: var(--secondary-darker);
+  --bs-btn-disabled-border-color: var(--secondary-darker);
+}
+
+.btn-gray {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #6c757d;
+  --bs-btn-border-color: #6c757d;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #5c636a;
+  --bs-btn-hover-border-color: #565e64;
+  --bs-btn-focus-shadow-rgb: 130, 138, 145;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #565e64;
+  --bs-btn-active-border-color: #51585e;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #6c757d;
+  --bs-btn-disabled-border-color: #6c757d;
+}
