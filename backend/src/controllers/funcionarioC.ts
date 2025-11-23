@@ -101,11 +101,11 @@ export const funcionarioC = {
     } catch (error: any) {
 
       if (error.code === "P2002") {
-        return res.status(400).json({ erro: "Usuário já existe." });
+        return res.status(400).json({ erro: "Usuário já existe" });
       }
 
       console.error("prisma error: ", error);
-      return res.status(500).json({ erro: "Erro ao criar funcionário." });
+      return res.status(500).json({ erro: "Erro ao criar funcionário" });
     }
   },
 
@@ -162,7 +162,7 @@ export const funcionarioC = {
     } catch (error) {
 
       console.error("Erro ao atualizar funcionário:", error);
-      return res.status(500).json({ message: "Erro ao atualizar funcionário." });
+      return res.status(500).json({ message: "Erro ao atualizar funcionário" });
     }
   },
 };
