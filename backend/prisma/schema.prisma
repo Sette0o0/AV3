@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum NivelPermissao{
+  Administrador
+  Engenheiro
+  Operador
+}
+
+enum StatusEtapa{
+  Pendente
+  Em_Andamento
+  Concluída
+}
+
+enum StatusPeca{
+  Em_Produção
+  Em_Transporte
+  Pronta
+}
+
+enum TipoPeca{
+  Nacional
+  Importada
+}
+
+enum TipoTeste{
+  Elétrico
+  Hidráulico
+  Aerodinâmico
+}
+
+enum ResultadoTeste{
+  Aprovado
+  Reprovado
+}
+
+enum TipoAeronave{
+  Comercial
+  Militar
+}
+
+model Funcionario {
+  id_func         Int     @id @default(autoincrement())
+  nome            String
+  telefone        String
+  endereco        String
+  usuario         String  @unique
+  senha           String
+  nivel_permissao NivelPermissao
+  etapa           Etapa[] @relation("FuncionariosEtapa")
+}
+
+model Etapa {
+  id_eta      Int @id @default(autoincrement())
+  nome        String
+  prazo       DateTime
+  status      StatusEtapa
+  funcionario Funcionario[] @relation("FuncionariosEtapa")
+  func_id     Int
+  aeronave    Aeronave @relation(fields: [aero_id], references: [id_aero])
+  aero_id     Int
+}
+
+model Peca {
+  id_pec      Int @id @default(autoincrement())
+  nome        String
+  tipo        TipoPeca
+  fornecedor  String
+  status      StatusPeca
+  aeronave    Aeronave @relation(fields: [aero_id], references: [id_aero])
+  aero_id     Int
+}
+
+model Teste {
+  id_tes      Int @id @default(autoincrement())
+  tipo        TipoTeste
+  resultado   ResultadoTeste
+  aeronave    Aeronave @relation(fields: [aero_id], references: [id_aero])
+  aero_id     Int
+}
+
+model Aeronave{
+  id_aero       Int @id @default(autoincrement())
+  codigo        String @unique
+  modelo        String
+  tipo          TipoAeronave
+  capacidade    Int
+  alcance       Int
+  pecas         Peca[]
+  etapas        Etapa[]
+  testes        Teste[]
+}
