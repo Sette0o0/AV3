@@ -9,4 +9,8 @@ router.get("/:id", aeronaveC.buscarPorId)
 
 router.post("/", aeronaveC.cadastrar)
 
+router.delete("/:id", aeronaveC.excluir)
+
+router.put("/:id", aeronaveC.atualizar)
+
 export default router

@@ -90,5 +90,58 @@ export const aeronaveC = {
       console.error("prisma error: ", error);
       return res.status(500).json({ erro: "Erro ao criar aeronave" });
     }
+  },
+
+  async excluir(req: Request, res: Response){
+    const id = Number(req.params.id)
+    try {
+      const result = await prisma.aeronave.delete({
+        where: {
+          id_aero: id
+        }
+      })
+
+      return res.status(200).json({
+        mensagem: "Aeronave excluída com sucesso"
+      });
+    } catch (error: any) {
+
+      if (error.code === "P2025"){
+        return res.status(404).json({ erro: "Aeronave não encontrada" });
+      }
+
+      console.error(error);
+      return res.status(500).json({ erro: "Erro ao excluír aeronave" });
+    }
+  },
+
+  async atualizar(req: Request, res: Response){
+    const id = Number(req.params.id);
+    const { codigo , modelo , tipo , capacidade , alcance  } = req.body
+
+    const updateData = {
+      codigo,
+      modelo,
+      tipo,
+      capacidade: Number(capacidade),
+      alcance: Number(alcance)
+    }
+
+    try {
+      const result = await prisma.aeronave.update({
+        where: {
+          id_aero: id
+        },
+        data: updateData
+      })
+
+      return res.status(200).json({
+        mensagem: "Aeronave atualizada com sucesso"
+      });
+    } catch (error: any) {
+      
+      console.error("Erro ao atualizar funcionário:", error);
+      return res.status(500).json({ message: "Erro ao atualizar funcionário" });
+    }
   }
 }
