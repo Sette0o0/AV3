@@ -16,6 +16,54 @@ export const aeronaveC = {
     }
   },
 
+  async buscarPorCodigo(req: Request, res: Response){
+    const codigo = req.params.codigo
+    try {
+      const aeronave = await prisma.aeronave.findUniqueOrThrow({
+        where: {
+          codigo: codigo
+        }
+      })
+
+      return res.status(200).json({
+        mensagem: "Aeronave encontrada com sucesso",
+        aeronave
+      })
+    } catch (error: any) {
+
+      if (error.code === "P2025") {
+        return res.status(404).json({ erro: "Aeronave não encontrado" });
+      }
+
+      console.error(error);
+      return res.status(500).json({ erro: "Erro ao buscar aeronave" });
+    }
+  },
+
+  async buscarPorId(req: Request, res: Response){
+    const id = Number(req.params.id)
+    try {
+      const aeronave = await prisma.aeronave.findUniqueOrThrow({
+        where: {
+          id_aero: id
+        }
+      })
+
+      return res.status(200).json({
+        mensagem: "Aeronave encontrada com sucesso",
+        aeronave
+      })
+    } catch (error: any) {
+
+      if (error.code === "P2025") {
+        return res.status(404).json({ erro: "Aeronave não encontrado" });
+      }
+
+      console.error(error);
+      return res.status(500).json({ erro: "Erro ao buscar aeronave" });
+    }
+  },
+
   async cadastrar(req: Request, res: Response){
     const { codigo, modelo, tipo, capacidade, alcance } = req.body
     const data = {
