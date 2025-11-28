@@ -6,6 +6,7 @@ import "dotenv/config";
 
 export const authC = {
   async autenticar(req: Request, res: Response){
+    const inicio = performance.now();
     const { usuario, senha } = req.body;
 
     try {
@@ -27,8 +28,11 @@ export const authC = {
       }
       const token = jwt.sign(payload, process.env.JWT_CODE!)
       
+      const fim = performance.now();
+      
       return res.status(200).json({
         mensagem: "Login realizado com sucesso",
+        processingTime: (fim - inicio).toFixed(2) + " ms",
         token
       })
     } catch (error: any) {

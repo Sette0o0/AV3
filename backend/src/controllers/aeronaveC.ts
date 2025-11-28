@@ -1,38 +1,50 @@
 import { prisma } from "../prisma.js"
+import { performance } from "perf_hooks"
 import type { Request, Response } from "express"
 
 export const aeronaveC = {
-  async listar(req: Request, res: Response){
+
+  async listar(req: Request, res: Response) {
+    const inicio = performance.now();
+
     try {
-      const aeronaves = await prisma.aeronave.findMany()
+      const aeronaves = await prisma.aeronave.findMany();
+
+      const fim = performance.now();
 
       return res.status(200).json({
         aeronaves,
-        mensagem: "Aeronaves listadas com sucesso"
-      })
+        mensagem: "Aeronaves listadas com sucesso",
+        processingTime: (fim - inicio).toFixed(2) + " ms"
+      });
+
     } catch (error) {
       console.error(error);
       return res.status(500).json({ erro: "Erro ao listar aeronaves" });
     }
   },
 
-  async buscarPorCodigo(req: Request, res: Response){
-    const codigo = req.params.codigo
+  async buscarPorCodigo(req: Request, res: Response) {
+    const inicio = performance.now();
+    const codigo = req.params.codigo;
+
     try {
       const aeronave = await prisma.aeronave.findUniqueOrThrow({
-        where: {
-          codigo: codigo
-        }
-      })
+        where: { codigo }
+      });
+
+      const fim = performance.now();
 
       return res.status(200).json({
         mensagem: "Aeronave encontrada com sucesso",
-        aeronave
-      })
+        aeronave,
+        processingTime: (fim - inicio).toFixed(2) + " ms"
+      });
+
     } catch (error: any) {
 
       if (error.code === "P2025") {
-        return res.status(404).json({ erro: "Aeronave não encontrado" });
+        return res.status(404).json({ erro: "Aeronave não encontrada" });
       }
 
       console.error(error);
@@ -40,23 +52,27 @@ export const aeronaveC = {
     }
   },
 
-  async buscarPorId(req: Request, res: Response){
-    const id = Number(req.params.id)
+  async buscarPorId(req: Request, res: Response) {
+    const inicio = performance.now();
+    const id = Number(req.params.id);
+
     try {
       const aeronave = await prisma.aeronave.findUniqueOrThrow({
-        where: {
-          id_aero: id
-        }
-      })
+        where: { id_aero: id }
+      });
+
+      const fim = performance.now();
 
       return res.status(200).json({
         mensagem: "Aeronave encontrada com sucesso",
-        aeronave
-      })
+        aeronave,
+        processingTime: (fim - inicio).toFixed(2) + " ms"
+      });
+
     } catch (error: any) {
 
       if (error.code === "P2025") {
-        return res.status(404).json({ erro: "Aeronave não encontrado" });
+        return res.status(404).json({ erro: "Aeronave não encontrada" });
       }
 
       console.error(error);
@@ -64,49 +80,59 @@ export const aeronaveC = {
     }
   },
 
-  async cadastrar(req: Request, res: Response){
-    const { codigo, modelo, tipo, capacidade, alcance } = req.body
+  async cadastrar(req: Request, res: Response) {
+    const inicio = performance.now();
+
+    const { codigo, modelo, tipo, capacidade, alcance } = req.body;
+
     const data = {
       codigo,
       modelo,
       tipo,
       capacidade: Number(capacidade),
       alcance: Number(alcance)
-    }
+    };
+
     try {
-      const result = await prisma.aeronave.create({
-        data: data
-      })
+      await prisma.aeronave.create({ data });
+
+      const fim = performance.now();
 
       return res.status(201).json({
-        mensagem: "Aeronave cadastrada com sucesso"
+        mensagem: "Aeronave cadastrada com sucesso",
+        processingTime: (fim - inicio).toFixed(2) + " ms"
       });
+
     } catch (error: any) {
 
       if (error.code === "P2002") {
         return res.status(400).json({ erro: "Aeronave já existe" });
       }
 
-      console.error("prisma error: ", error);
+      console.error("prisma error:", error);
       return res.status(500).json({ erro: "Erro ao criar aeronave" });
     }
   },
 
-  async excluir(req: Request, res: Response){
-    const id = Number(req.params.id)
+  async excluir(req: Request, res: Response) {
+    const inicio = performance.now();
+    const id = Number(req.params.id);
+
     try {
-      const result = await prisma.aeronave.delete({
-        where: {
-          id_aero: id
-        }
-      })
+      await prisma.aeronave.delete({
+        where: { id_aero: id }
+      });
+
+      const fim = performance.now();
 
       return res.status(200).json({
-        mensagem: "Aeronave excluída com sucesso"
+        mensagem: "Aeronave excluída com sucesso",
+        processingTime: (fim - inicio).toFixed(2) + " ms"
       });
+
     } catch (error: any) {
 
-      if (error.code === "P2025"){
+      if (error.code === "P2025") {
         return res.status(404).json({ erro: "Aeronave não encontrada" });
       }
 
@@ -115,9 +141,11 @@ export const aeronaveC = {
     }
   },
 
-  async atualizar(req: Request, res: Response){
+  async atualizar(req: Request, res: Response) {
+    const inicio = performance.now();
+
     const id = Number(req.params.id);
-    const { codigo , modelo , tipo , capacidade , alcance  } = req.body
+    const { codigo, modelo, tipo, capacidade, alcance } = req.body;
 
     const updateData = {
       codigo,
@@ -125,23 +153,24 @@ export const aeronaveC = {
       tipo,
       capacidade: Number(capacidade),
       alcance: Number(alcance)
-    }
+    };
 
     try {
-      const result = await prisma.aeronave.update({
-        where: {
-          id_aero: id
-        },
+      await prisma.aeronave.update({
+        where: { id_aero: id },
         data: updateData
-      })
+      });
+
+      const fim = performance.now();
 
       return res.status(200).json({
-        mensagem: "Aeronave atualizada com sucesso"
+        mensagem: "Aeronave atualizada com sucesso",
+        processingTime: (fim - inicio).toFixed(2) + " ms"
       });
+
     } catch (error: any) {
-      
-      console.error("Erro ao atualizar funcionário:", error);
-      return res.status(500).json({ message: "Erro ao atualizar funcionário" });
+      console.error("Erro ao atualizar aeronave:", error);
+      return res.status(500).json({ message: "Erro ao atualizar aeronave" });
     }
   }
-}
+};

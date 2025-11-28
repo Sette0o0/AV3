@@ -1,19 +1,24 @@
 import * as bcrypt from 'bcrypt';
 import type { Request, Response } from "express";
 import { prisma } from "../prisma.js";
+import { performance } from "perf_hooks";
 
 export const funcionarioC = {
+  
   async listar(req: Request, res: Response) {
-    try{
+    const inicio = performance.now();
+
+    try {
       const funcionarios = await prisma.funcionario.findMany({
-        omit: {
-          senha: true
-        },
+        omit: { senha: true },
         orderBy: { id_func: "asc" },
       });
 
+      const fim = performance.now();
+
       return res.status(200).json({
         mensagem: "Funcionários listados com sucesso",
+        processingTime: (fim - inicio).toFixed(2) + " ms",
         funcionarios
       });
 
@@ -23,19 +28,21 @@ export const funcionarioC = {
     }
   },
 
-  async buscarPorUsername(req: Request, res: Response){
+  async buscarPorUsername(req: Request, res: Response) {
+    const inicio = performance.now();
     const user = req.params.user;
 
     try {
       const funcionario = await prisma.funcionario.findUniqueOrThrow({
-        omit: {
-          senha: true
-        },
+        omit: { senha: true },
         where: { usuario: user }
       });
 
+      const fim = performance.now();
+
       return res.status(200).json({
         mensagem: "Funcionário encontrado com sucesso",
+        processingTime: (fim - inicio).toFixed(2) + " ms",
         funcionario
       });
 
@@ -50,19 +57,21 @@ export const funcionarioC = {
     }
   },
 
-  async buscarPorId(req: Request, res: Response){
+  async buscarPorId(req: Request, res: Response) {
+    const inicio = performance.now();
     const id = Number(req.params.id);
 
     try {
       const funcionario = await prisma.funcionario.findUniqueOrThrow({
-        omit: {
-          senha: true
-        },
+        omit: { senha: true },
         where: { id_func: id }
       });
 
+      const fim = performance.now();
+
       return res.status(200).json({
         mensagem: "Funcionário encontrado com sucesso",
+        processingTime: (fim - inicio).toFixed(2) + " ms",
         funcionario
       });
 
@@ -77,7 +86,9 @@ export const funcionarioC = {
     }
   },
 
-  async cadastrar(req: Request, res: Response){
+  async cadastrar(req: Request, res: Response) {
+    const inicio = performance.now();
+
     const { nome, telefone, endereco, usuario, senha, nivel_permissao } = req.body;
 
     const hashedPassword = await bcrypt.hash(senha, 10);
@@ -94,8 +105,11 @@ export const funcionarioC = {
         }
       });
 
+      const fim = performance.now();
+
       return res.status(201).json({
-        mensagem: "Funcionário cadastrado com sucesso"
+        mensagem: "Funcionário cadastrado com sucesso",
+        processingTime: (fim - inicio).toFixed(2) + " ms"
       });
 
     } catch (error: any) {
@@ -109,7 +123,8 @@ export const funcionarioC = {
     }
   },
 
-  async excluir(req: Request, res: Response){
+  async excluir(req: Request, res: Response) {
+    const inicio = performance.now();
     const id = Number(req.params.id);
 
     try {
@@ -117,8 +132,11 @@ export const funcionarioC = {
         where: { id_func: id }
       });
 
+      const fim = performance.now();
+
       return res.status(200).json({
-        mensagem: "Funcionário excluído com sucesso"
+        mensagem: "Funcionário excluído com sucesso",
+        processingTime: (fim - inicio).toFixed(2) + " ms"
       });
 
     } catch (error: any) {
@@ -133,6 +151,7 @@ export const funcionarioC = {
   },
 
   async atualizar(req: Request, res: Response) {
+    const inicio = performance.now();
     const id = Number(req.params.id);
     const { nome, telefone, endereco, usuario, senha, nivel_permissao } = req.body;
 
@@ -155,12 +174,14 @@ export const funcionarioC = {
         data: updateData,
       });
 
+      const fim = performance.now();
+
       return res.status(200).json({
-        mensagem: "Funcionário atualizado com sucesso"
+        mensagem: "Funcionário atualizado com sucesso",
+        processingTime: (fim - inicio).toFixed(2) + " ms"
       });
 
     } catch (error) {
-
       console.error("Erro ao atualizar funcionário:", error);
       return res.status(500).json({ message: "Erro ao atualizar funcionário" });
     }
