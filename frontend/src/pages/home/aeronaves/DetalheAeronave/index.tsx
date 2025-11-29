@@ -21,7 +21,7 @@ export default function DetalheAeronaveLayout() {
 
   useEffect(() => {
     carregarAeronave()
-  })
+  }, [])
 
   if (!aeronave) return <p>Aeronave não encontrada</p>;
 
