@@ -44,6 +44,20 @@ npm run test
 
 ------------------------------------------------------------------------
 
+
+## 📊 Métricas de Performance
+
+### ⏱️ Tempo de Resposta (ms)
+![Tempo de Resposta](./docs/response.png)
+
+### ⚙️ Tempo de Processamento (ms)
+![Tempo de Processamento](./docs/processing.png)
+
+### 📡 Latência (ms)
+![Latência](./docs/latency.png)
+
+------------------------------------------------------------------------
+
 ## 👨‍💻 Autor
 
 # Sette0_0
