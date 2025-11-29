@@ -35,7 +35,11 @@ export const aeronaveC = {
           pecas: true,
           etapas: {
             include: {
-              funcionario: true
+              funcionario: {
+                omit: {
+                  senha: true
+                }
+              }
             },
           },
           testes: true,
