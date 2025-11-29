@@ -69,7 +69,6 @@ model Etapa {
   prazo       DateTime
   status      StatusEtapa
   funcionario Funcionario[] @relation("FuncionariosEtapa")
-  func_id     Int
   aeronave    Aeronave @relation(fields: [aero_id], references: [id_aero])
   aero_id     Int
 }
