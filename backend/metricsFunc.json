@@ -1,0 +1,200 @@
+[
+  {
+    "route": "http://localhost:3001/api/funcionario",
+    "method": "POST",
+    "results": [
+      {
+        "concurrency": 1,
+        "averages": {
+          "avgResponseTime": 89.94,
+          "avgProcessingTime": 59.31,
+          "avgLatency": 30.63,
+          "errors": 0
+        }
+      },
+      {
+        "concurrency": 5,
+        "averages": {
+          "avgResponseTime": 74.29,
+          "avgProcessingTime": 69.69,
+          "avgLatency": 4.6,
+          "errors": 0
+        }
+      },
+      {
+        "concurrency": 10,
+        "averages": {
+          "avgResponseTime": 106.26,
+          "avgProcessingTime": 101.24,
+          "avgLatency": 5.02,
+          "errors": 0
+        }
+      }
+    ]
+  },
+  {
+    "route": "http://localhost:3001/api/funcionario",
+    "method": "GET",
+    "results": [
+      {
+        "concurrency": 1,
+        "averages": {
+          "avgResponseTime": 3.8,
+          "avgProcessingTime": 2.44,
+          "avgLatency": 1.36,
+          "errors": 0
+        }
+      },
+      {
+        "concurrency": 5,
+        "averages": {
+          "avgResponseTime": 5.32,
+          "avgProcessingTime": 3.18,
+          "avgLatency": 2.15,
+          "errors": 0
+        }
+      },
+      {
+        "concurrency": 10,
+        "averages": {
+          "avgResponseTime": 11.95,
+          "avgProcessingTime": 6.88,
+          "avgLatency": 5.07,
+          "errors": 0
+        }
+      }
+    ]
+  },
+  {
+    "route": "http://localhost:3001/api/funcionario/1",
+    "method": "GET",
+    "results": [
+      {
+        "concurrency": 1,
+        "averages": {
+          "avgResponseTime": 2.68,
+          "avgProcessingTime": 1.15,
+          "avgLatency": 1.53,
+          "errors": 0
+        }
+      },
+      {
+        "concurrency": 5,
+        "averages": {
+          "avgResponseTime": 5.24,
+          "avgProcessingTime": 2.51,
+          "avgLatency": 2.73,
+          "errors": 0
+        }
+      },
+      {
+        "concurrency": 10,
+        "averages": {
+          "avgResponseTime": 9.93,
+          "avgProcessingTime": 5.64,
+          "avgLatency": 4.29,
+          "errors": 0
+        }
+      }
+    ]
+  },
+  {
+    "route": "http://localhost:3001/api/funcionario/user/user-2",
+    "method": "GET",
+    "results": [
+      {
+        "concurrency": 1,
+        "averages": {
+          "avgResponseTime": 2.26,
+          "avgProcessingTime": 1.2,
+          "avgLatency": 1.06,
+          "errors": 0
+        }
+      },
+      {
+        "concurrency": 5,
+        "averages": {
+          "avgResponseTime": 4.5,
+          "avgProcessingTime": 2.23,
+          "avgLatency": 2.27,
+          "errors": 0
+        }
+      },
+      {
+        "concurrency": 10,
+        "averages": {
+          "avgResponseTime": 10.38,
+          "avgProcessingTime": 4.9,
+          "avgLatency": 5.48,
+          "errors": 0
+        }
+      }
+    ]
+  },
+  {
+    "route": "http://localhost:3001/api/funcionario/2",
+    "method": "PUT",
+    "results": [
+      {
+        "concurrency": 1,
+        "averages": {
+          "avgResponseTime": 60,
+          "avgProcessingTime": 58.43,
+          "avgLatency": 1.57,
+          "errors": 0
+        }
+      },
+      {
+        "concurrency": 5,
+        "averages": {
+          "avgResponseTime": 75.81,
+          "avgProcessingTime": 73.95,
+          "avgLatency": 1.86,
+          "errors": 0
+        }
+      },
+      {
+        "concurrency": 10,
+        "averages": {
+          "avgResponseTime": 111,
+          "avgProcessingTime": 107.93,
+          "avgLatency": 3.07,
+          "errors": 0
+        }
+      }
+    ]
+  },
+  {
+    "route": "dynamic-url",
+    "method": "DELETE",
+    "results": [
+      {
+        "concurrency": 1,
+        "averages": {
+          "avgResponseTime": 5.1,
+          "avgProcessingTime": 3.76,
+          "avgLatency": 1.34,
+          "errors": 0
+        }
+      },
+      {
+        "concurrency": 5,
+        "averages": {
+          "avgResponseTime": 11.13,
+          "avgProcessingTime": 8.65,
+          "avgLatency": 2.48,
+          "errors": 0
+        }
+      },
+      {
+        "concurrency": 10,
+        "averages": {
+          "avgResponseTime": 17.65,
+          "avgProcessingTime": 13.49,
+          "avgLatency": 4.16,
+          "errors": 0
+        }
+      }
+    ]
+  }
+]
