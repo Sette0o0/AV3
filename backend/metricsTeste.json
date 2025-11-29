@@ -1,0 +1,35 @@
+[
+  {
+    "route": "http://localhost:3001/api/teste",
+    "method": "POST",
+    "results": [
+      {
+        "concurrency": 1,
+        "averages": {
+          "avgResponseTime": 35.97,
+          "avgProcessingTime": 5.78,
+          "avgLatency": 30.19,
+          "errors": 0
+        }
+      },
+      {
+        "concurrency": 5,
+        "averages": {
+          "avgResponseTime": 13.65,
+          "avgProcessingTime": 8.36,
+          "avgLatency": 5.29,
+          "errors": 0
+        }
+      },
+      {
+        "concurrency": 10,
+        "averages": {
+          "avgResponseTime": 21.35,
+          "avgProcessingTime": 13.92,
+          "avgLatency": 7.43,
+          "errors": 0
+        }
+      }
+    ]
+  }
+]
