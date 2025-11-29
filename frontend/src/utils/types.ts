@@ -29,6 +29,7 @@ export interface Funcionario{
 }
 
 export interface Peca{
+  id_pec: number
   nome: string
   tipo: TipoPeca
   fornecedor: string

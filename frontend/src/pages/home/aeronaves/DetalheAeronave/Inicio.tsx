@@ -10,7 +10,11 @@ import { ModalGerarRelatorio } from "./modals/ModalGerarRelatorio";
 import { NivelPermissao } from "../../../../utils/enums";
 
 export default function DetalheAeronave() {
-  const aeronave = useOutletContext<Aeronave>();
+  const { aeronave, carregarAeronave } = useOutletContext<{
+    aeronave: Aeronave,
+    carregarAeronave: () => void
+  }>();
+  
   const { user } = useAuth()
   const [showModal, setShowModal] = useState(false);
 
@@ -29,14 +33,14 @@ export default function DetalheAeronave() {
       }
       <div className={`d-flex flex-column row-gap-5 my-5`}>
         <div>
-          <PecasTable aeronave={aeronave} />
+          <PecasTable refetch={carregarAeronave} aeronave={aeronave} />
         </div>
-        <div>
+        {/* <div>
           <EtapasTable aeronave={aeronave} />
         </div>
         <div>
           <TestesTable aeronave={aeronave} />
-        </div>
+        </div> */}
       </div>
       <ModalGerarRelatorio
         show={showModal}

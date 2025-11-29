@@ -5,16 +5,17 @@ import { PecasTableList } from "./PecasTableList";
 import { ModalCadastroPeca } from "../modals/ModalCadastroPeca";
 import { useAuth } from "../../../../../hooks/useAuth";
 import { Navigate } from "react-router-dom";
-import { NivelPermissao } from "../../../../../utils/enums";
+import { NivelPermissao, StatusPeca, TipoPeca } from "../../../../../utils/enums";
 
 interface props{
   aeronave: Aeronave
+  refetch: () => void
 }
 
-export function PecasTable({aeronave}: props){
+export function PecasTable({ aeronave, refetch }: props){
   const [search, setSearch] = useState("");
-  const [filterTipo, setFilterTipo] = useState("");
-  const [filterStatus, setFilterStatus] = useState("");
+  const [filterTipo, setFilterTipo] = useState<TipoPeca | "">("");
+  const [filterStatus, setFilterStatus] = useState<StatusPeca | "">("");
   const [showModal, setShowModal] = useState(false)
   const { user } = useAuth()
   
@@ -39,7 +40,7 @@ export function PecasTable({aeronave}: props){
         </div>
       </div>
       {user.nivel_permissao !== NivelPermissao.Operador && (
-        <ModalCadastroPeca onClose={() => setShowModal(false)} show={showModal} />
+        <ModalCadastroPeca refetch={refetch} aero_id={aeronave.id_aero} onClose={() => setShowModal(false)} show={showModal} />
       )}
     </>
   )

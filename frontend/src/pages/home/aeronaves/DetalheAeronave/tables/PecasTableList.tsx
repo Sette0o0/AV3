@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useReactTable, getCoreRowModel, getFilteredRowModel, flexRender, type ColumnDef } from "@tanstack/react-table";
 import { useNavigate } from "react-router-dom";
 import type { Peca } from "../../../../../utils/types";
-import { normalizarTexto } from "../../../../../utils/coisas";
+import { normalizarTexto, tirarUnderline } from "../../../../../utils/coisas";
 
 interface props{
   search: string
@@ -19,7 +19,7 @@ export function PecasTableList({search, filterTipo, filterStatus, pecas}: props)
       { accessorKey: "nome", header: "Nome" },
       { accessorKey: "tipo", header: "Tipo" },
       { accessorKey: "fornecedor", header: "Fornecedor" },
-      { accessorKey: "status", header: "Status" },
+      { accessorKey: "status", header: "Status", cell: ({ getValue }) => tirarUnderline(String(getValue())) },
     ],
     []
   );
@@ -68,7 +68,7 @@ export function PecasTableList({search, filterTipo, filterStatus, pecas}: props)
             table.getRowModel().rows.map((row) => {
               const peca = row.original;
               return (
-                <tr style={{cursor: "pointer"}} key={row.id} onClick={() => navigate(`peca/${peca.nome}`)}>
+                <tr style={{cursor: "pointer"}} key={row.id} onClick={() => navigate(`peca/${peca.id_pec}`)}>
                   {row.getVisibleCells().map((cell) => (
                     <td key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}

@@ -29,7 +29,7 @@ export const AppRoutes = createBrowserRouter([
           { index: true, element: <Inicio /> },
           { path: "aeronaves", element: <Aeronaves /> },
           {
-            path: "aeronaves/:id",
+            path: "aeronaves/:codigo",
             element: <DetalheAeronaveLayout />,
             children: [
               { index: true, element: <DetalheAeronave />},

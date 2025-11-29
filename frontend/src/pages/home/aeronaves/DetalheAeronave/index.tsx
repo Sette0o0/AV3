@@ -1,9 +1,27 @@
 import { Outlet, useParams } from "react-router-dom";
 import type { Aeronave } from "../../../../utils/types";
+import { useEffect, useState } from "react";
+import api from "../../../../utils/api";
 
 export default function DetalheAeronaveLayout() {
-  const { id } = useParams<{ id: string }>();
-  const aeronave: Aeronave | undefined = (dados.aeronaves as Aeronave[]).find(a => a.codigo === id);
+  const { codigo } = useParams<{ codigo: string }>();
+  const [ aeronave, setAeronave ] = useState<Aeronave | null>(null)
+
+  async function carregarAeronave() {
+    try {
+      const res = await api.get(`/aeronave/codigo/${codigo}`)
+
+      setAeronave(res.data.aeronave)
+
+    } catch (error: any) {
+      console.error(error.message)
+      alert(error.response.data.erro)
+    }
+  }
+
+  useEffect(() => {
+    carregarAeronave()
+  })
 
   if (!aeronave) return <p>Aeronave não encontrada</p>;
 
@@ -18,7 +36,7 @@ export default function DetalheAeronaveLayout() {
           <p>Tipo: {aeronave.tipo}</p>
         </div>
         <div className={`d-flex flex-column`}>
-          <Outlet context={aeronave}></Outlet>
+          <Outlet context={{aeronave, carregarAeronave}}></Outlet>
         </div>
       </div>
     </>

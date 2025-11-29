@@ -1,28 +1,49 @@
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import type { Aeronave, Peca } from "../../../../../utils/types";
 import { Button } from "react-bootstrap";
+import { StatusPeca } from "../../../../../utils/enums";
+import { tirarUnderline } from "../../../../../utils/coisas";
+import api from "../../../../../utils/api";
+import { useEffect, useState } from "react";
 
 export default function Peca(){
-  const { id, pecaId } = useParams<{ id: string; pecaId: string }>();
-  const aeronave = useOutletContext<Aeronave>();
+	const [ peca, setPeca ] = useState<Peca | null>(null)
+  const { codigo, pecaId } = useParams<{ codigo: string; pecaId: string }>();
+  const { aeronave, carregarAeronave } = useOutletContext<{aeronave: Aeronave, carregarAeronave: () => void}>();
 	const navigate = useNavigate()
 	
-  const peca: Peca | undefined = aeronave?.pecas?.find(p => p.nome === pecaId);
+	useEffect(() => {
+  	setPeca(aeronave.pecas.find(p => p.id_pec === Number(pecaId)) ?? null)
+	}, [aeronave])
 
   if (!peca) {
-    return <p>Peça não encontrada para a aeronave {id}</p>;
+    return <p>Peça não encontrada para a aeronave {codigo}</p>;
   }
+
+	async function alterarStatus(status: StatusPeca) {
+		if (!peca) return
+		try {
+			const res = await api.put("/peca/status/" + peca.id_pec, {status})
+
+			carregarAeronave()
+			alert(res.data.mensagem)
+
+		} catch (error: any) {
+			console.error(error.message);
+			alert(error.response.data.erro)
+		}
+	}
 
 	return(
 		<>
 			<div className={`d-flex flex-column my-4`}>
 				<div className={`mb-4`}>
-					<button className={`btn btn-gray`} onClick={() => navigate(`/aeronaves/${id}`)}>
+					<button className={`btn btn-gray`} onClick={() => navigate(`/aeronaves/${codigo}`)}>
 						Voltar
 					</button>
 				</div>
 				<div>
-					<h2>{pecaId}</h2>
+					<h2>{peca.nome}</h2>
 					<div className={`row text-center text-nowrap mt-3 row-gap-3`}>
 						<div className={`col`}>
 							Tipo de peça: <strong>{peca.tipo}</strong>
@@ -31,12 +52,12 @@ export default function Peca(){
 							Fornecedor: <strong>{peca.fornecedor}</strong>
 						</div>
 						<div className={`col`}>
-							Status Atual: <strong>{peca.status}</strong>
+							Status Atual: <strong>{tirarUnderline(peca.status)}</strong>
 						</div>
 					</div>
 					<div className={`column-gap-3 d-flex flex-row mt-4 justify-content-center`}>
 						{
-							peca.status === "Em Produção" ? (
+							peca.status === StatusPeca.Em_Produção ? (
 								<Button variant="secondary" style={{cursor: "default", pointerEvents: "none"}}>Em Produção</Button>
 							) : (
 								<Button variant="secondary" disabled>Em Produção</Button>
@@ -44,9 +65,9 @@ export default function Peca(){
 						}
 						<div className={`align-content-center fs-3`}>{">"}</div>
 						{
-							peca.status === "Em Produção" ? (
-								<Button onClick={() => console.log("Agora a peça está em transporte")}>Em Transporte</Button>
-							) : peca.status === "Em Transporte" ? (
+							peca.status === StatusPeca.Em_Produção ? (
+								<Button onClick={() => alterarStatus(StatusPeca.Em_Transporte)}>Em Transporte</Button>
+							) : peca.status === StatusPeca.Em_Transporte ? (
 								<Button variant="secondary" style={{cursor: "default", pointerEvents: "none"}}>Em Transporte</Button>
 							) : (
 								<Button variant="secondary" disabled>Em Transporte</Button>
@@ -54,10 +75,10 @@ export default function Peca(){
 						}
 						<div className={`align-content-center fs-3`}>{">"}</div>
 						{
-							peca.status === "Em Produção" ? (
+							peca.status === StatusPeca.Em_Produção ? (
 								<Button disabled>Pronta</Button>
-							) : peca.status === "Em Transporte" ? (
-								<Button onClick={() => console.log("Agora a peça está pronta")}>Pronta</Button>
+							) : peca.status === StatusPeca.Em_Transporte ? (
+								<Button onClick={() => alterarStatus(StatusPeca.Pronta)}>Pronta</Button>
 							) : (
 								<Button variant="secondary" style={{cursor: "default", pointerEvents: "none"}}>Pronta</Button>
 							)

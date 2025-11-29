@@ -1,10 +1,12 @@
+import { StatusPeca, TipoPeca } from "../../../../../utils/enums"
+
 interface props{
   search: string
   setSearch: (value: string) => void
-  filterTipo: string
-  setFilterTipo: (value: string) => void
-  filterStatus: string
-  setFilterStatus: (value: string) => void
+  filterTipo: TipoPeca | ""
+  setFilterTipo: (value: TipoPeca | "") => void
+  filterStatus: StatusPeca | ""
+  setFilterStatus: (value: StatusPeca | "") => void
 }
 
 export function PecasTableControls({search, setSearch, filterTipo, setFilterTipo, filterStatus, setFilterStatus}: props){
@@ -21,22 +23,22 @@ export function PecasTableControls({search, setSearch, filterTipo, setFilterTipo
       <select
         className={`form-select`}
         value={filterTipo}
-        onChange={(e) => setFilterTipo(e.target.value)}
+        onChange={(e) => setFilterTipo(e.target.value as TipoPeca)}
       >
         <option value="">Todos</option>
-        <option value="Nacional">Nacional</option>
-        <option value="Importada">Importada</option>
+        <option value={TipoPeca.Nacional}>Nacional</option>
+        <option value={TipoPeca.Importada}>Importada</option>
       </select>
 
       <select
         className={`form-select`}
         value={filterStatus}
-        onChange={(e) => setFilterStatus(e.target.value)}
+        onChange={(e) => setFilterStatus(e.target.value as StatusPeca)}
       >
         <option value="">Todos</option>
-        <option value="Em Produção">Em Produção</option>
-        <option value="Em Transporte">Em Transporte</option>
-        <option value="Pronta">Pronta</option>
+        <option value={StatusPeca.Em_Produção}>Em Produção</option>
+        <option value={StatusPeca.Em_Transporte}>Em Transporte</option>
+        <option value={StatusPeca.Pronta}>Pronta</option>
       </select>
     </div>
   )
