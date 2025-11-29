@@ -1,8 +1,10 @@
+import { ResultadoTeste, TipoTeste } from "../../../../../utils/enums"
+
 interface props{
-  filterTipo: string
-  setFilterTipo: (value: string) => void
-  filterStatus: string
-  setFilterStatus: (value: string) => void
+  filterTipo: TipoTeste | ""
+  setFilterTipo: (value: TipoTeste | "") => void
+  filterStatus: ResultadoTeste | ""
+  setFilterStatus: (value: ResultadoTeste | "") => void
 }
 
 export function TestesTableControls({filterTipo, setFilterTipo, filterStatus, setFilterStatus}: props){
@@ -12,22 +14,22 @@ export function TestesTableControls({filterTipo, setFilterTipo, filterStatus, se
       <select
         className={`form-select`}
         value={filterTipo}
-        onChange={(e) => setFilterTipo(e.target.value)}
+        onChange={(e) => setFilterTipo(e.target.value as TipoTeste)}
       >
         <option value="">Todos</option>
-        <option value="Elétrico">Elétrico</option>
-        <option value="Hidráulico">Hidráulico</option>
-        <option value="Aerodinâmico">Aerodinâmico</option>
+        <option value={TipoTeste.Elétrico}>Elétrico</option>
+        <option value={TipoTeste.Hidráulico}>Hidráulico</option>
+        <option value={TipoTeste.Aerodinâmico}>Aerodinâmico</option>
       </select>
 
       <select
         className={`form-select`}
         value={filterStatus}
-        onChange={(e) => setFilterStatus(e.target.value)}
+        onChange={(e) => setFilterStatus(e.target.value as ResultadoTeste)}
       >
         <option value="">Todos</option>
-        <option value="Aprovado">Aprovado</option>
-        <option value="Reprovado">Reprovado</option>
+        <option value={ResultadoTeste.Aprovado}>Aprovado</option>
+        <option value={ResultadoTeste.Reprovado}>Reprovado</option>
       </select>
     </div>
   )

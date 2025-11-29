@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { ResultadoTeste, TipoTeste } from "../../../../../utils/enums";
+import api from "../../../../../utils/api";
 
 interface Props {
+  aero_id: number
   show: boolean;
   onClose: () => void;
 }
 
-export function ModalCadastroTeste({ show, onClose }: Props) {
+export function ModalCadastroTeste({ aero_id, show, onClose }: Props) {
   const initialForm = {
-    tipo: "Elétrico",
-    resultado: "Aprovado",
+    tipo: TipoTeste.Elétrico,
+    resultado: ResultadoTeste.Aprovado,
+    aero_id: aero_id,
   };
 
   const [form, setForm] = useState(initialForm);
@@ -23,10 +27,18 @@ export function ModalCadastroTeste({ show, onClose }: Props) {
     }));
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log("Cadastrar a Teste na Aeronave", form);
-    handleClose();
+    try {
+      const res = await api.post(`/teste`, form)
+
+      handleClose();
+      alert(res.data.mensagem)
+
+    } catch (error: any) {
+      console.error(error.message);
+      alert(error.response.data.erro)
+    }
   }
 
   function handleClose() {
@@ -50,9 +62,9 @@ export function ModalCadastroTeste({ show, onClose }: Props) {
               onChange={handleChange}
               required
             >
-              <option value="Elétrico">Elétrico</option>
-              <option value="Hidráulico">Hidráulico</option>
-              <option value="Aerodinâmico">Aerodinâmico</option>
+              <option value={TipoTeste.Elétrico}>Elétrico</option>
+              <option value={TipoTeste.Hidráulico}>Hidráulico</option>
+              <option value={TipoTeste.Aerodinâmico}>Aerodinâmico</option>
             </Form.Select>
           </Form.Group>
 
@@ -64,8 +76,8 @@ export function ModalCadastroTeste({ show, onClose }: Props) {
               onChange={handleChange}
               required
             >
-              <option value="Aprovado">Aprovado</option>
-              <option value="Reprovado">Reprovado</option>
+              <option value={ResultadoTeste.Aprovado}>Aprovado</option>
+              <option value={ResultadoTeste.Reprovado}>Reprovado</option>
             </Form.Select>
           </Form.Group>
         </Modal.Body>

@@ -38,9 +38,9 @@ export default function DetalheAeronave() {
         <div>
           <EtapasTable refetch={carregarAeronave} aeronave={aeronave} />
         </div>
-        {/* <div>
-          <TestesTable aeronave={aeronave} />
-        </div> */}
+        <div>
+          <TestesTable refetch={carregarAeronave} aeronave={aeronave} />
+        </div>
       </div>
       <ModalGerarRelatorio
         show={showModal}

@@ -3,14 +3,16 @@ import { TestesTableControls } from "./TestesTableControls";
 import type { Aeronave } from "../../../../../utils/types";
 import { TestesTableList } from "./TesteTableList";
 import { ModalCadastroTeste } from "../modals/ModalCadastroTeste";
+import type { ResultadoTeste, TipoTeste } from "../../../../../utils/enums";
 
 interface props{
+  refetch: () => void
   aeronave: Aeronave
 }
 
-export function TestesTable({aeronave}: props){
-  const [filterTipo, setFilterTipo] = useState("");
-  const [filterStatus, setFilterStatus] = useState("");
+export function TestesTable({ refetch, aeronave}: props){
+  const [filterTipo, setFilterTipo] = useState<TipoTeste | "">("");
+  const [filterStatus, setFilterStatus] = useState<ResultadoTeste | "">("");
   const [showModal, setShowModal] = useState(false)
 
   return(
@@ -29,7 +31,14 @@ export function TestesTable({aeronave}: props){
           <TestesTableList filterTipo={filterTipo} filterStatus={filterStatus} testes={aeronave.testes} />
         </div>
       </div>
-      <ModalCadastroTeste onClose={() => setShowModal(false)} show={showModal} />
+      <ModalCadastroTeste
+        onClose={() => {
+          setShowModal(false)
+          refetch()
+        }}
+        aero_id={aeronave.id_aero}
+        show={showModal}
+      />
     </>
   )
 }
