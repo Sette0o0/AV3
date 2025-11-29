@@ -30,5 +30,32 @@ export const pecaC = {
       console.error("prisma error:", error);
       return res.status(500).json({ erro: "Erro ao criar peça" });
     }
+  },
+
+  async atualizarStatus(req: Request, res: Response){
+    const inicio = performance.now()
+    const id_pec = Number(req.params.id)
+    const { status } = req.body
+    const data = {
+      status
+    }
+    try {
+      await prisma.peca.update({
+        where: { id_pec: id_pec},
+        data: data
+      })
+
+      const fim = performance.now();
+
+      return res.status(200).json({
+        mensagem: "Status da peça atualizado com sucesso",
+        processingTime: (fim - inicio).toFixed(2) + " ms"
+      });
+
+    } catch (error: any) {
+
+      console.error("prisma error:", error);
+      return res.status(500).json({ erro: "Erro ao atualizar status da peça" });
+    }
   }
 }
