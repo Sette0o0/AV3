@@ -24,7 +24,7 @@ export const authC = {
         id: user.id_func,
         nome: user.nome,
         usuario: user.usuario,
-        nivel_acesso: user.nivel_permissao,
+        nivel_permissao: user.nivel_permissao,
       }
       const token = jwt.sign(payload, process.env.JWT_CODE!)
       
