@@ -46,6 +46,7 @@ npm run test
 
 
 ## 📊 Métricas de Performance
+Documento mais detalhado sobre as métricas na pasta docs
 
 ### ⏱️ Tempo de Resposta (ms)
 ![Tempo de Resposta](./docs/response.png)
