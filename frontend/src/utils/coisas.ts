@@ -16,3 +16,8 @@ export function formatarTelefone(numero: string = ""): string{
 
   return numero;
 }
+
+export function tirarUnderline(text: string = ""): string{
+  return text
+    .replaceAll("_", " ")
+}
