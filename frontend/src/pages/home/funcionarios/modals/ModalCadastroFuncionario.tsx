@@ -1,21 +1,23 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import { NivelPermissao } from "../../../../utils/permissions";
-import { formatarTelefone } from "../../../../utils/coisas";
+import { formatarTelefone, normalizarTexto } from "../../../../utils/coisas";
+import { NivelPermissao } from "../../../../utils/enums";
+import api from "../../../../utils/api";
 
 interface Props {
   show: boolean;
   onClose: () => void;
+  refetch: () => void;
 }
 
-export function ModalCadastroFuncionario({ show, onClose }: Props) {
+export function ModalCadastroFuncionario({ show, onClose, refetch }: Props) {
   const initialForm = {
     nome: "",
     usuario: "",
     senha: "",
     endereco: "",
     telefone: "",
-    cargo: NivelPermissao.Administrador,
+    nivel_permissao: NivelPermissao.Administrador,
   };
 
   const [form, setForm] = useState(initialForm);
@@ -24,9 +26,6 @@ export function ModalCadastroFuncionario({ show, onClose }: Props) {
     let { name, value }: { name: string; value: string | number } = e.target;
 
     switch (name) {
-      case "cargo":
-        value = Number(value);
-        break;
       case "telefone":
         value = formatarTelefone(value);
         break;
@@ -38,9 +37,21 @@ export function ModalCadastroFuncionario({ show, onClose }: Props) {
     }));
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log("Cadastrar o funcionário", form);
+    const formEnvio = {
+      ...form,
+      telefone: normalizarTexto(form.telefone)
+    }
+    try {
+      const res = await api.post("/funcionario", formEnvio)
+      refetch()
+      alert(res.data.mensagem)
+    } catch (error: any) {
+      console.error(error.message)
+      alert(error.response.data.erro)
+    }
+
     handleClose();
   }
 
@@ -118,11 +129,11 @@ export function ModalCadastroFuncionario({ show, onClose }: Props) {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="cargo">
-            <Form.Label>Cargo</Form.Label>
+          <Form.Group className="mb-3" controlId="nivel_permissao">
+            <Form.Label>Nível de Permissão</Form.Label>
             <Form.Select
-              name="cargo"
-              value={form.cargo}
+              name="nivel_permissao"
+              value={form.nivel_permissao}
               onChange={handleChange}
               required
             >

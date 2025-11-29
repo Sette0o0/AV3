@@ -1,17 +1,16 @@
 import { useMemo, useState } from "react";
 import { useReactTable, getCoreRowModel, getFilteredRowModel, flexRender, type ColumnDef } from "@tanstack/react-table";
-import { getPermissaoNome } from "../../../../utils/permissions";
 import { normalizarTexto } from "../../../../utils/coisas";
 import { ModalFuncionario } from "../modals/ModalFuncionario";
 import type { Funcionario } from "../../../../utils/types";
-import dados from "../../../../dadosTeste.json";
 
 interface props{
+  funcionarios: Funcionario[] | null
   search: string
   filterPermissao: string
 }
 
-export function FuncionariosTableLista({search, filterPermissao}: props) {
+export function FuncionariosTableLista({funcionarios, search, filterPermissao}: props) {
   const [ funcionarioSelecionado, setFuncionarioSelecionado ] = useState<Funcionario | null>(null)
   const [ showModal, setShowModal ] = useState(false)
 
@@ -20,34 +19,28 @@ export function FuncionariosTableLista({search, filterPermissao}: props) {
     setShowModal(true)
   }
 
-  const funcionarios: Funcionario[] = dados.funcionarios;
-
   const columns = useMemo<ColumnDef<Funcionario>[]>(
     () => [
-      { accessorKey: "id", header: "ID" },
+      { accessorKey: "id_func", header: "ID" },
       { accessorKey: "nome", header: "Nome" },
       { accessorKey: "usuario", header: "Usuário" },
-      {
-        accessorKey: "nivelPermissao",
-        header: "Cargo",
-        cell: ({ getValue }) => getPermissaoNome(Number(getValue())),
-      },
+      { accessorKey: "nivel_permissao", header: "Cargo" },
     ],
     []
   );
 
   const filteredData = useMemo(() => {
-    return funcionarios.filter((f) => {
+    return funcionarios?.filter((f) => {
       const matchSearch =
         normalizarTexto(f.nome).includes(normalizarTexto(search)) ||
         normalizarTexto(f.usuario).includes(normalizarTexto(search));
 
       const matchPermissao =
         filterPermissao === "" ||
-        String(f.nivelPermissao) === filterPermissao;
+        String(f.nivel_permissao) === filterPermissao;
 
       return matchSearch && matchPermissao;
-    });
+    }) ?? [];
   }, [funcionarios, search, filterPermissao]);
 
   const table = useReactTable({

@@ -1,12 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FuncionariosTableLista } from "./FuncionariosTableLista";
 import { FuncionariosTableControls } from "./FuncionariosTableControls";
 import { ModalCadastroFuncionario } from "../modals/ModalCadastroFuncionario";
+import type { NivelPermissao } from "../../../../utils/enums";
+import type { Funcionario } from "../../../../utils/types";
+import api from "../../../../utils/api";
 
 export default function FuncionariosTable(){
+  const [ funcionarios, setFuncionarios ] = useState<Funcionario[] | null>(null)
   const [search, setSearch] = useState("");
-  const [filterPermissao, setFilterPermissao] = useState("");
+  const [filterPermissao, setFilterPermissao] = useState<NivelPermissao | "">("");
   const [showModal, setShowModal] = useState(false)
+
+  async function carregarFuncionarios() {
+    try {
+      const res = await api.get("/funcionario")
+      setFuncionarios(res.data.funcionarios)
+    } catch (error: any) {
+      console.error(error.message)
+      alert(error.response.data.erro)
+    }
+  }
+  
+  useEffect(() => {
+    carregarFuncionarios()
+  }, [])
 
   return(
     <>
@@ -21,10 +39,10 @@ export default function FuncionariosTable(){
           </div>
         </div>
         <div className={`w-100 mt-3 table-responsive`}>
-          <FuncionariosTableLista search={search} filterPermissao={filterPermissao} />
+          <FuncionariosTableLista funcionarios={funcionarios} search={search} filterPermissao={filterPermissao} />
         </div>
       </div>
-      <ModalCadastroFuncionario onClose={() => setShowModal(false)} show={showModal} />
+      <ModalCadastroFuncionario refetch={carregarFuncionarios} onClose={() => setShowModal(false)} show={showModal} />
     </>
   )
 }
