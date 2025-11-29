@@ -33,7 +33,11 @@ export const aeronaveC = {
         where: { codigo },
         include: {
           pecas: true,
-          etapas: true,
+          etapas: {
+            include: {
+              funcionario: true
+            },
+          },
           testes: true,
         }
       });
