@@ -10,7 +10,7 @@ export const etapaC = {
 
     const data = {
       nome,
-      prazo,
+      prazo: new Date(prazo),
       status: StatusEtapa.Pendente,
       aero_id: Number(aero_id),
     }
