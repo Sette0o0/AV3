@@ -1,0 +1,101 @@
+[
+  {
+    "route": "http://localhost:3001/api/peca",
+    "method": "POST",
+    "results": [
+      {
+        "concurrency": 1,
+        "averages": {
+          "avgResponseTime": 34.83,
+          "avgProcessingTime": 5.47,
+          "avgLatency": 29.36,
+          "errors": 0
+        }
+      },
+      {
+        "concurrency": 5,
+        "averages": {
+          "avgResponseTime": 14.62,
+          "avgProcessingTime": 9.21,
+          "avgLatency": 5.41,
+          "errors": 0
+        }
+      },
+      {
+        "concurrency": 10,
+        "averages": {
+          "avgResponseTime": 22,
+          "avgProcessingTime": 14.55,
+          "avgLatency": 7.46,
+          "errors": 0
+        }
+      }
+    ]
+  },
+  {
+    "route": "http://localhost:3001/api/peca/status/1",
+    "method": "PUT",
+    "results": [
+      {
+        "concurrency": 1,
+        "averages": {
+          "avgResponseTime": 8.94,
+          "avgProcessingTime": 7.36,
+          "avgLatency": 1.58,
+          "errors": 0
+        }
+      },
+      {
+        "concurrency": 5,
+        "averages": {
+          "avgResponseTime": 9.92,
+          "avgProcessingTime": 6.76,
+          "avgLatency": 3.16,
+          "errors": 0
+        }
+      },
+      {
+        "concurrency": 10,
+        "averages": {
+          "avgResponseTime": 16.61,
+          "avgProcessingTime": 11.29,
+          "avgLatency": 5.32,
+          "errors": 0
+        }
+      }
+    ]
+  },
+  {
+    "route": "dynamic-url",
+    "method": "PUT",
+    "results": [
+      {
+        "concurrency": 1,
+        "averages": {
+          "avgResponseTime": 6.2,
+          "avgProcessingTime": 4.53,
+          "avgLatency": 1.67,
+          "errors": 0
+        }
+      },
+      {
+        "concurrency": 5,
+        "averages": {
+          "avgResponseTime": 14.57,
+          "avgProcessingTime": 11.24,
+          "avgLatency": 3.33,
+          "errors": 0
+        }
+      },
+      {
+        "concurrency": 10,
+        "averages": {
+          "avgResponseTime": 20.37,
+          "avgProcessingTime": 14.93,
+          "avgLatency": 5.44,
+          "errors": 0
+        }
+      }
+    ]
+  }
+]
