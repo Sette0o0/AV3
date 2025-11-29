@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useReactTable, getCoreRowModel, getFilteredRowModel, flexRender, type ColumnDef } from "@tanstack/react-table";
 import { useNavigate } from "react-router-dom";
 import type { Etapa } from "../../../../../utils/types";
-import { normalizarTexto } from "../../../../../utils/coisas";
+import { formatarData, normalizarTexto } from "../../../../../utils/coisas";
 
 interface props{
   search: string
@@ -16,7 +16,7 @@ export function EtapasTableList({search, filterStatus, etapas}: props) {
   const columns = useMemo<ColumnDef<Etapa>[]>(
     () => [
       { accessorKey: "nome", header: "Nome" },
-      { accessorKey: "prazo", header: "prazo" },
+      { accessorKey: "prazo", header: "prazo", cell: ({getValue}) => formatarData(String(getValue())) },
       { accessorKey: "status", header: "Status" },
     ],
     []
@@ -62,7 +62,7 @@ export function EtapasTableList({search, filterStatus, etapas}: props) {
             table.getRowModel().rows.map((row) => {
               const etapa = row.original;
               return (
-                <tr style={{cursor: "pointer"}} key={row.id} onClick={() => navigate(`etapa/${etapa.nome}`)}>
+                <tr style={{cursor: "pointer"}} key={row.id} onClick={() => navigate(`etapa/${etapa.id_eta}`)}>
                   {row.getVisibleCells().map((cell) => (
                     <td key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}

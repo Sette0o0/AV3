@@ -37,10 +37,11 @@ export interface Peca{
 }
 
 export interface Etapa{
+  id_eta: number
   nome: string
   prazo: string
   status: StatusEtapa
-  funcionarios: Funcionario[]
+  funcionario: Funcionario[]
 }
 
 export interface Teste{

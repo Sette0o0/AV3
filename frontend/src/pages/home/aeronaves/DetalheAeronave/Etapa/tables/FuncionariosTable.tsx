@@ -8,10 +8,11 @@ import { NivelPermissao } from "../../../../../../utils/enums";
 import { Navigate } from "react-router-dom";
 
 interface props{
-  funcionarios: Funcionario[]
+  refetch: () => void
+  funcionarios: Funcionario[] | null
 }
 
-export default function FuncionariosTable({funcionarios}: props){
+export default function FuncionariosTable({refetch, funcionarios}: props){
   const [search, setSearch] = useState("");
   const [filterPermissao, setFilterPermissao] = useState("");
   const [showModal, setShowModal] = useState(false)
@@ -38,7 +39,14 @@ export default function FuncionariosTable({funcionarios}: props){
         </div>
       </div>
       {user.nivel_permissao !== NivelPermissao.Operador && (
-        <ModalSelecionarFuncionario onClose={() => setShowModal(false)} show={showModal} funcionariosAssociados={funcionarios} />
+        <ModalSelecionarFuncionario
+          onClose={() => {
+            setShowModal(false)
+            refetch()
+          }}
+          show={showModal}
+          funcionariosAssociados={funcionarios}
+        />
       )}
     </>
   )

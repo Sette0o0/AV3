@@ -1,8 +1,10 @@
+import { StatusEtapa } from "../../../../../utils/enums"
+
 interface props{
   search: string
   setSearch: (value: string) => void
-  filterStatus: string
-  setFilterStatus: (value: string) => void
+  filterStatus: StatusEtapa | ""
+  setFilterStatus: (value: StatusEtapa | "") => void
 }
 
 export function EtapasTableControls({search, setSearch, filterStatus, setFilterStatus}: props){
@@ -19,12 +21,12 @@ export function EtapasTableControls({search, setSearch, filterStatus, setFilterS
       <select
         className={`form-select`}
         value={filterStatus}
-        onChange={(e) => setFilterStatus(e.target.value)}
+        onChange={(e) => setFilterStatus(e.target.value as StatusEtapa)}
       >
         <option value="">Todos</option>
-        <option value="Pendente">Pendente</option>
-        <option value="Em Andamento">Em Andamento</option>
-        <option value="Concluída">Concluída</option>
+        <option value={StatusEtapa.Pendente}>Pendente</option>
+        <option value={StatusEtapa.Em_Andamento}>Em Andamento</option>
+        <option value={StatusEtapa.Concluída}>Concluída</option>
       </select>
     </div>
   )

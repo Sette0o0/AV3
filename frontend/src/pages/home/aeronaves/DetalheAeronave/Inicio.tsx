@@ -35,10 +35,10 @@ export default function DetalheAeronave() {
         <div>
           <PecasTable refetch={carregarAeronave} aeronave={aeronave} />
         </div>
-        {/* <div>
-          <EtapasTable aeronave={aeronave} />
-        </div>
         <div>
+          <EtapasTable refetch={carregarAeronave} aeronave={aeronave} />
+        </div>
+        {/* <div>
           <TestesTable aeronave={aeronave} />
         </div> */}
       </div>

@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import api from "../../../../../utils/api";
 
 interface Props {
+  refetch: () => void
+  aero_id: number
   show: boolean;
   onClose: () => void;
 }
 
-export function ModalCadastroEtapa({ show, onClose }: Props) {
+export function ModalCadastroEtapa({ refetch, aero_id, show, onClose }: Props) {
   const initialForm = {
     nome: "",
     prazo: "",
+    aero_id: aero_id,
   };
 
   const [form, setForm] = useState(initialForm);
@@ -23,10 +27,19 @@ export function ModalCadastroEtapa({ show, onClose }: Props) {
     }));
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log("Cadastrar a Etapa na Aeronave com o status inicial", form);
-    handleClose();
+    try {
+      const res = await api.post(`/etapa`, form)
+
+      refetch()
+      handleClose();
+      alert(res.data.mensagem)
+
+    } catch (error: any) {
+      console.error(error.message);
+      alert(error.response.data.erro)
+    }
   }
 
   function handleClose() {

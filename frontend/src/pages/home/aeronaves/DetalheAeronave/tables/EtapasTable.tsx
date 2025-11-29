@@ -5,15 +5,16 @@ import { ModalCadastroEtapa } from "../modals/ModalCadastroEtapa";
 import { EtapasTableList } from "./EtapasTableList";
 import { useAuth } from "../../../../../hooks/useAuth";
 import { Navigate } from "react-router-dom";
-import { NivelPermissao } from "../../../../../utils/enums";
+import { NivelPermissao, StatusEtapa } from "../../../../../utils/enums";
 
 interface props{
   aeronave: Aeronave
+  refetch: () => void
 }
 
-export function EtapasTable({aeronave}: props){
+export function EtapasTable({aeronave, refetch}: props){
   const [search, setSearch] = useState("");
-  const [filterStatus, setFilterStatus] = useState("");
+  const [filterStatus, setFilterStatus] = useState<StatusEtapa | "">("");
   const [showModal, setShowModal] = useState(false)
   const { user } = useAuth()
   
@@ -38,7 +39,7 @@ export function EtapasTable({aeronave}: props){
         </div>
       </div>
       {user.nivel_permissao !== NivelPermissao.Operador && (
-        <ModalCadastroEtapa onClose={() => setShowModal(false)} show={showModal} />
+        <ModalCadastroEtapa refetch={refetch} aero_id={aeronave.id_aero} onClose={() => setShowModal(false)} show={showModal} />
       )}
     </>
   )

@@ -1,24 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import type { Funcionario } from "../../../../../../utils/types";
-import dados from "../../../../../../dadosTeste.json";
+import api from "../../../../../../utils/api";
+import { useParams } from "react-router-dom";
 
 interface Props {
   show: boolean;
   onClose: () => void;
-  funcionariosAssociados?: Funcionario[];
+  funcionariosAssociados: Funcionario[] | null;
 }
 
-export function ModalSelecionarFuncionario({ show, onClose, funcionariosAssociados = [] }: Props) {
-  const todosFuncionarios: Funcionario[] = dados.funcionarios;
-  
-  const idsAssociados = funcionariosAssociados.map((f) => f.id_func);
-
-  const funcionariosDisponiveis = todosFuncionarios.filter(
-    (f) => !idsAssociados.includes(f.id_func)
-  );
-
+export function ModalSelecionarFuncionario({ show, onClose, funcionariosAssociados }: Props) {
+  const { etapaId } = useParams<{etapaId: string}>()
+  const [ idsAssociados, setIdsAssociados ] = useState<number[] | null>(null)
+  const [ todosFuncionarios, setTodosFuncionarios ] = useState<Funcionario[] | null>(null)
+  const [ funcionariosDisponiveis, SetFuncionariosDisponiveis ] = useState<Funcionario[] | null>(null)
   const [selecionados, setSelecionados] = useState<number[]>([]);
+
+  async function carregarTodosFuncionarios() {
+    try {
+      const res = await api.get("/funcionario")
+      setTodosFuncionarios(res.data.funcionarios)
+
+    } catch (error: any) {
+      console.error(error.message)
+      alert(error.response.data.erro)
+    }
+  }
+
+  useEffect(() => {
+    carregarTodosFuncionarios()
+  }, [])
+
+  useEffect(() => {    
+    setIdsAssociados(funcionariosAssociados?.map((f) => f.id_func) ?? null)
+  }, [funcionariosAssociados])
+
+  useEffect(() => {
+    (async () => {
+      SetFuncionariosDisponiveis(todosFuncionarios?.filter(
+    (f) => !idsAssociados?.includes(f.id_func)) ?? null)
+    })()
+  }, [todosFuncionarios, idsAssociados])
 
   function handleToggle(id: number) {
     setSelecionados((prev) =>
@@ -26,10 +49,21 @@ export function ModalSelecionarFuncionario({ show, onClose, funcionariosAssociad
     );
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log("Funcionários selecionados:", selecionados);
-    handleClose();
+    const dataEnvio = {
+      funcionarios: selecionados
+    }
+    try {
+      const res = await api.put("/etapa/funcionarios/" + etapaId, dataEnvio)
+      
+      alert(res.data.mensagem)
+      handleClose();
+
+    } catch (error: any) {
+      console.error(error.message)
+      alert(error.response.data.erro)
+    }
   }
 
   function handleClose() {
@@ -45,15 +79,15 @@ export function ModalSelecionarFuncionario({ show, onClose, funcionariosAssociad
 
       <Form id="form-selecionar-func" onSubmit={handleSubmit}>
         <Modal.Body>
-          {funcionariosDisponiveis.length > 0 ? (
+          {funcionariosDisponiveis ? (
             funcionariosDisponiveis.map((f) => (
               <Form.Check
-                key={f.id}
+                key={f.id_func}
                 type="checkbox"
-                id={`func-${f.id}`}
+                id={`${f.id_func}`}
                 label={`${f.nome} (${f.usuario})`}
-                checked={selecionados.includes(f.id)}
-                onChange={() => handleToggle(f.id)}
+                checked={selecionados.includes(f.id_func)}
+                onChange={() => handleToggle(f.id_func)}
               />
             ))
           ) : (
