@@ -21,3 +21,11 @@ export function tirarUnderline(text: string = ""): string{
   return text
     .replaceAll("_", " ")
 }
+
+export function formatarData(dataIso: string): string{
+  const data = dataIso.split("T")[0].split(" ")[0];
+
+  const [ano, mes, dia] = data.split("-");
+
+  return `${dia}/${mes}/${ano}`;
+}
