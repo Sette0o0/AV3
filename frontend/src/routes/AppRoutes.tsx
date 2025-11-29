@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import { lazy } from "react";
 import { PrivateRoute } from "./PrivateRoute";
 import { RoleRoute } from "./RoleRoute";
+import { NivelPermissao } from "../utils/enums";
 
 const Login = lazy(() => import("../pages/login"));
 const HomeLayout = lazy(() => import("../pages/home"));
@@ -37,7 +38,7 @@ export const AppRoutes = createBrowserRouter([
             ],
           },
           {
-            element: <RoleRoute allowedRoles={[1]} />,
+            element: <RoleRoute allowedRoles={[NivelPermissao.Administrador]} />,
             children: [
               { path: "funcionarios", element: <Funcionarios /> },
             ],

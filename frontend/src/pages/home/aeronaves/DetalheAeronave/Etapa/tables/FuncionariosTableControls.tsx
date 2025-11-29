@@ -1,4 +1,4 @@
-import { NivelPermissao } from "../../../../../../utils/permissions"
+import { NivelPermissao } from "../../../../../../utils/enums"
 
 interface props{
   search: string

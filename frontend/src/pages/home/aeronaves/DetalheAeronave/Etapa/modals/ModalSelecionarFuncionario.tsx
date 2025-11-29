@@ -12,10 +12,10 @@ interface Props {
 export function ModalSelecionarFuncionario({ show, onClose, funcionariosAssociados = [] }: Props) {
   const todosFuncionarios: Funcionario[] = dados.funcionarios;
   
-  const idsAssociados = funcionariosAssociados.map((f) => f.id);
+  const idsAssociados = funcionariosAssociados.map((f) => f.id_func);
 
   const funcionariosDisponiveis = todosFuncionarios.filter(
-    (f) => !idsAssociados.includes(f.id)
+    (f) => !idsAssociados.includes(f.id_func)
   );
 
   const [selecionados, setSelecionados] = useState<number[]>([]);

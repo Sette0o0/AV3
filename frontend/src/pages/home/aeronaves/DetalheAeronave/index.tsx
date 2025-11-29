@@ -1,5 +1,4 @@
 import { Outlet, useParams } from "react-router-dom";
-import dados from "../../../../dadosTeste.json";
 import type { Aeronave } from "../../../../utils/types";
 
 export default function DetalheAeronaveLayout() {

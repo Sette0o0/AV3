@@ -1,23 +1,25 @@
-import { useOutletContext } from "react-router-dom";
+import { Navigate, useOutletContext } from "react-router-dom";
 import type { Aeronave } from "../../../../utils/types";
 import { PecasTable } from "./tables/PecasTable";
 import { EtapasTable } from "./tables/EtapasTable";
 import { TestesTable } from "./tables/TestesTable";
-import { NivelPermissao } from "../../../../utils/permissions";
 import { useAuth } from "../../../../hooks/useAuth";
 import { Button } from "react-bootstrap";
 import { useState } from "react";
 import { ModalGerarRelatorio } from "./modals/ModalGerarRelatorio";
+import { NivelPermissao } from "../../../../utils/enums";
 
 export default function DetalheAeronave() {
   const aeronave = useOutletContext<Aeronave>();
   const { user } = useAuth()
   const [showModal, setShowModal] = useState(false);
 
+  if (!user) return <Navigate to={"/login"} replace />
+
   return (
     <>
       {
-        user?.cargo !== NivelPermissao.Operador && (
+        user.nivel_permissao !== NivelPermissao.Operador && (
           <div className={`ms-auto`}>
             <Button onClick={() => setShowModal(true)}>
               Gerar Relatório

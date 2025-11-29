@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import { useReactTable, getCoreRowModel, getFilteredRowModel, flexRender, type ColumnDef } from "@tanstack/react-table";
 import { normalizarTexto } from "../../../../../../utils/coisas";
 import type { Funcionario } from "../../../../../../utils/types";
-import { getPermissaoNome } from "../../../../../../utils/permissions";
 
 interface props{
   search: string
@@ -16,11 +15,7 @@ export function FuncionariosTableLista({search, filterPermissao, funcionarios}: 
       { accessorKey: "id", header: "ID" },
       { accessorKey: "nome", header: "Nome" },
       { accessorKey: "usuario", header: "Usuário" },
-      {
-        accessorKey: "nivelPermissao",
-        header: "Cargo",
-        cell: ({ getValue }) => getPermissaoNome(Number(getValue())),
-      },
+      { accessorKey: "nivelPermissao", header: "Cargo" },
     ],
     []
   );
@@ -33,7 +28,7 @@ export function FuncionariosTableLista({search, filterPermissao, funcionarios}: 
 
       const matchPermissao =
         filterPermissao === "" ||
-        String(f.nivelPermissao) === filterPermissao;
+        String(f.nivel_permissao) === filterPermissao;
 
       return matchSearch && matchPermissao;
     });

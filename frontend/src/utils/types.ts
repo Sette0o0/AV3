@@ -1,3 +1,5 @@
+import type { NivelPermissao, ResultadoTeste, StatusEtapa, StatusPeca, TipoAeronave, TipoPeca, TipoTeste } from "./enums";
+
 export interface FormLogintype{
   usuario: string
   senha: string
@@ -7,7 +9,7 @@ export interface User{
   id: number,
   nome: string,
   usuario: string,
-  cargo: number,
+  nivel_permissao: NivelPermissao,
 }
 
 export interface AuthContextType {
@@ -18,37 +20,37 @@ export interface AuthContextType {
 }
 
 export interface Funcionario{
-  id: number
+  id_func: number
   nome: string
   telefone: string
   endereco: string
   usuario: string
-  nivelPermissao: number
+  nivel_permissao: NivelPermissao
 }
 
 export interface Peca{
   nome: string
-  tipo: "Nacional" | "Importada"
+  tipo: TipoPeca
   fornecedor: string
-  status: "Em Produção" | "Em Transporte" | "Pronta"
+  status: StatusPeca
 }
 
 export interface Etapa{
   nome: string
   prazo: string
-  status: "Pendente" | "Em Andamento" | "Concluída"
+  status: StatusEtapa
   funcionarios: Funcionario[]
 }
 
 export interface Teste{
-  tipo: "Elétrico" | "Hidráulico" | "Aerodinâmico"
-  resultado: "Aprovado" | "Reprovado"
+  tipo: TipoTeste
+  resultado: ResultadoTeste
 }
 
 export interface Aeronave{
   codigo: string
   modelo: string
-  tipo: "Comercial" | "Militar"
+  tipo: TipoAeronave
   capacidade: number
   alcance: number
   pecas: Peca[]

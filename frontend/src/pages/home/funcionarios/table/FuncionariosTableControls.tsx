@@ -1,10 +1,10 @@
-import { NivelPermissao } from "../../../../utils/permissions"
+import { NivelPermissao } from "../../../../utils/enums"
 
 interface props{
   search: string
   setSearch: (value: string) => void
   filterPermissao: string
-  setFilterPermissao: (value: string) => void
+  setFilterPermissao: (value: NivelPermissao | "") => void
 }
 
 export function FuncionariosTableControls({search, setSearch, filterPermissao, setFilterPermissao}: props){
@@ -21,7 +21,7 @@ export function FuncionariosTableControls({search, setSearch, filterPermissao, s
       <select
         className={`form-select`}
         value={filterPermissao}
-        onChange={(e) => setFilterPermissao(e.target.value)}
+        onChange={(e) => setFilterPermissao(e.target.value as NivelPermissao | "")}
       >
         <option value="">Todos os níveis</option>
         <option value={NivelPermissao.Administrador}>Administrador</option>

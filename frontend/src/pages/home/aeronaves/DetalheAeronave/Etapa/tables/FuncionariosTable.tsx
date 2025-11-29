@@ -3,8 +3,9 @@ import { FuncionariosTableLista } from "./FuncionariosTableLista";
 import { FuncionariosTableControls } from "./FuncionariosTableControls";
 import { ModalSelecionarFuncionario } from "../modals/ModalSelecionarFuncionario";
 import type { Funcionario } from "../../../../../../utils/types";
-import { NivelPermissao } from "../../../../../../utils/permissions";
 import { useAuth } from "../../../../../../hooks/useAuth";
+import { NivelPermissao } from "../../../../../../utils/enums";
+import { Navigate } from "react-router-dom";
 
 interface props{
   funcionarios: Funcionario[]
@@ -15,6 +16,8 @@ export default function FuncionariosTable({funcionarios}: props){
   const [filterPermissao, setFilterPermissao] = useState("");
   const [showModal, setShowModal] = useState(false)
   const { user } = useAuth()
+  
+  if (!user) return <Navigate to={"/login"} replace />
 
   return(
     <>
@@ -22,7 +25,7 @@ export default function FuncionariosTable({funcionarios}: props){
         <div className={`d-flex flex-column flex-md-row row-gap-2`}>
           <div className={`d-flex flex-row align-items-center`}>
             <h1>Funcionarios</h1>
-            {user?.cargo !== NivelPermissao.Operador && (
+            {user.nivel_permissao !== NivelPermissao.Operador && (
               <button className={`btn btn-primary ms-auto ms-md-2`} onClick={() => setShowModal(true)}>+ Funcionário</button>
             )}
           </div>
@@ -34,7 +37,7 @@ export default function FuncionariosTable({funcionarios}: props){
           <FuncionariosTableLista funcionarios={funcionarios} search={search} filterPermissao={filterPermissao} />
         </div>
       </div>
-      {user?.cargo !== NivelPermissao.Operador && (
+      {user.nivel_permissao !== NivelPermissao.Operador && (
         <ModalSelecionarFuncionario onClose={() => setShowModal(false)} show={showModal} funcionariosAssociados={funcionarios} />
       )}
     </>

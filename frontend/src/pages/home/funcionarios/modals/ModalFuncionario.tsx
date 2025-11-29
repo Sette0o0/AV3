@@ -1,5 +1,4 @@
 import { formatarTelefone } from "../../../../utils/coisas"
-import { getPermissaoNome } from "../../../../utils/permissions"
 import type { Funcionario } from "../../../../utils/types"
 import { Modal, Button, ListGroup } from "react-bootstrap"
 
@@ -20,14 +19,11 @@ export function ModalFuncionario({ show, funcionario, onClose }: Props) {
         {funcionario ? (
           <ListGroup variant="flush">
             {Object.entries(funcionario)
-              .filter(([chave]) => chave !== "senha")
               .map(([chave, valor]) => (
                 <ListGroup.Item key={chave} className="d-flex">
                   <strong className="text-capitalize me-2">{chave}</strong>
                   <span>
-                    {chave === "nivelPermissao"
-                      ? getPermissaoNome(valor)
-                      : chave === "telefone"
+                    {chave === "telefone"
                       ? formatarTelefone(String(valor))
                       : String(valor)}
                   </span>

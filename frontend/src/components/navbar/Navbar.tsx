@@ -3,7 +3,7 @@ import { useAuth } from "../../hooks/useAuth"
 import styles from "./Navbar.module.css"
 import ThemeToggle from "../themeToggle/ThemeToggle"
 import LoadingScreen from "../LoadingScreen"
-import { NivelPermissao } from "../../utils/permissions"
+import { NivelPermissao } from "../../utils/enums"
 
 export function Navbar(){
   const { user, loading, logout} = useAuth()
@@ -27,7 +27,7 @@ export function Navbar(){
             <li className={`${styles["li-link"]}`}>
               <a className={styles["nav-links"]} onClick={() => navigate("/aeronaves")}>Aeronaves</a>
             </li>
-            {user.cargo === NivelPermissao.Administrador && (
+            {user.nivel_permissao === NivelPermissao.Administrador && (
               <li className={styles["li-link"]}>
                 <a className={styles["nav-links"]} onClick={() => navigate("/funcionarios")}>Funcionários</a>
               </li>
