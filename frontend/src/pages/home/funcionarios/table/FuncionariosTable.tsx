@@ -39,7 +39,7 @@ export default function FuncionariosTable(){
           </div>
         </div>
         <div className={`w-100 mt-3 table-responsive`}>
-          <FuncionariosTableLista funcionarios={funcionarios} search={search} filterPermissao={filterPermissao} />
+          <FuncionariosTableLista refetch={carregarFuncionarios} funcionarios={funcionarios} search={search} filterPermissao={filterPermissao} />
         </div>
       </div>
       <ModalCadastroFuncionario refetch={carregarFuncionarios} onClose={() => setShowModal(false)} show={showModal} />
