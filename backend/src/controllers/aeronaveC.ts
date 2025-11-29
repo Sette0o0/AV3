@@ -30,7 +30,12 @@ export const aeronaveC = {
 
     try {
       const aeronave = await prisma.aeronave.findUniqueOrThrow({
-        where: { codigo }
+        where: { codigo },
+        include: {
+          pecas: true,
+          etapas: true,
+          testes: true,
+        }
       });
 
       const fim = performance.now();
