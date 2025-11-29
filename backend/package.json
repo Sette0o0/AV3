@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "npm install && prisma generate && prisma migrate reset --force && prisma migrate dev && npm run build && npm run start",
+    "dev": "npm install && prisma generate && prisma migrate reset --force && prisma migrate dev && npm run build && prisma db seed && npm run start",
     "build": "tsc",
     "start": "node dist/servidor.js",
     "test": "npm run build && npm run start"
