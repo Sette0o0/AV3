@@ -19,6 +19,10 @@ Antes de rodar o projeto, instale:
 
 ### 🧱 Primeira vez rodando o projeto
 
+Altere o .env na pasta backend, troque as variáveis pelas usadas no seu mySql.
+Nos meus testes ele já criava o banco sozinho se ele não existia, mas se der
+erro tente criar o banco antes você mesmo
+
 Use o comando abaixo na **pasta raiz**:
 
 ``` sh
@@ -32,6 +36,15 @@ Esse comando executa automaticamente:
 -   Compilação dos arquivos TypeScript (`tsc`)
 -   Execução do backend + frontend
 
+### Usuário padrâo
+
+O projeto começa com um usuário padrão cadastrado
+
+Usuário: `admin`
+Senha: `123`
+
+Crie um outro admin e depois apague o padrão
+
 ------------------------------------------------------------------------
 
 ### 🔄 Executando novamente (modo rápido)
@@ -43,7 +56,6 @@ npm run test
 ```
 
 ------------------------------------------------------------------------
-
 
 ## 📊 Métricas de Performance
 Documento mais detalhado sobre as métricas na pasta docs
