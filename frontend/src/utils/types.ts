@@ -1,19 +1,18 @@
 export interface FormLogintype{
   usuario: string
   senha: string
-
-  // temporario
-  cargo: number
 }
 
 export interface User{
-  usuario: string
-  cargo: number
+  id: number,
+  nome: string,
+  usuario: string,
+  cargo: number,
 }
 
 export interface AuthContextType {
   user: User | null;
-  login: (usuario: User) => void;
+  login: (usuario: FormLogintype) => any;
   logout: () => void;
   loading: boolean;
 }
