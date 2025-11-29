@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import jsPDF from "jspdf";
 import type { Aeronave } from "../../../../../utils/types";
+import { formatarData, tirarUnderline } from "../../../../../utils/coisas";
 
 interface Props {
   show: boolean;
@@ -18,48 +19,71 @@ export function ModalGerarRelatorio({ show, onClose, aeronave }: Props) {
   }
 
   function gerarRelatorio() {
-    const doc = new jsPDF();
+    const doc = new jsPDF({ unit: "pt" });
 
-    let texto = `Relatório de Entrega da Aeronave\n\n`;
-    texto += `Cliente: ${form.cliente}\n`;
-    texto += `Data de entrega: ${form.dataEntrega}\n\n`;
+    let conteudo = "";
+    const add = (linha: string = "") => (conteudo += linha + "\n");
 
-    texto += `Código: ${aeronave.codigo}\n`;
-    texto += `Modelo: ${aeronave.modelo}\n`;
-    texto += `Tipo: ${aeronave.tipo}\n`;
-    texto += `Capacidade: ${aeronave.capacidade}\n`;
-    texto += `Alcance: ${aeronave.alcance}\n\n`;
+    add("Relatório de Entrega da Aeronave");
+    add("");
+    add(`Cliente: ${form.cliente}`);
+    add(`Data de Entrega: ${formatarData(form.dataEntrega)}`);
+    add("");
 
-    texto += `Peças:\n`;
-    if (aeronave.pecas?.length) {
-      aeronave.pecas.forEach((p, i) => {
-        texto += `${i + 1}. ${p.nome} | Tipo: ${p.tipo} | Fornecedor: ${p.fornecedor} | Status: ${p.status}\n`;
-      });
-    } else {
-      texto += "Nenhuma peça cadastrada.\n";
-    }
+    add("=== Informações da Aeronave ===");
+    add(`Código: ${aeronave.codigo}`);
+    add(`Modelo: ${aeronave.modelo}`);
+    add(`Tipo: ${aeronave.tipo}`);
+    add(`Capacidade: ${aeronave.capacidade}`);
+    add(`Alcance: ${aeronave.alcance} pés`);
+    add("");
 
-    texto += `\nEtapas:\n`;
-    if (aeronave.etapas?.length) {
-      aeronave.etapas.forEach((e, i) => {
-        const funcionarios = e.funcionarios.map(f => f.nome).join(", ") || "Nenhum";
-        texto += `${i + 1}. ${e.nome} | Prazo: ${e.prazo} | Status: ${e.status} | Funcionários: ${funcionarios}\n`;
-      });
-    } else {
-      texto += "Nenhuma etapa cadastrada.\n";
-    }
+    add("=== Peças da Aeronave ===");
+    aeronave.pecas.forEach((p, i) => {
+      add(`Peça ${i + 1}: ${p.nome}`);
+      add(`  Tipo: ${p.tipo}`);
+      add(`  Fornecedor: ${p.fornecedor}`);
+      add(`  Status: ${tirarUnderline(p.status)}`);
+      add("");
+    });
 
-    texto += `\nTestes:\n`;
-    if (aeronave.testes?.length) {
-      aeronave.testes.forEach((t, i) => {
-        texto += `${i + 1}. Tipo: ${t.tipo} | Resultado: ${t.resultado}\n`;
-      });
-    } else {
-      texto += "Nenhum teste cadastrado.\n";
-    }
+    add("=== Etapas da Produção ===");
+    aeronave.etapas.forEach((etapa, i) => {
+      add(`Etapa ${i + 1}: ${etapa.nome}`);
+      add(`  Status: ${tirarUnderline(etapa.status)}`);
+      add(`  Prazo: ${formatarData(etapa.prazo)}`);
 
-    const lines = doc.splitTextToSize(texto, 180);
-    doc.text(lines, 15, 15);
+      if (etapa.funcionario.length > 0) {
+        add("  Funcionários:");
+        etapa.funcionario.forEach((f) => {
+          add(`    • [${f.id_func}] ${f.nome} — ${f.nivel_permissao}`);
+        });
+      } else {
+        add("  Nenhum funcionário responsável");
+      }
+
+      add("");
+    });
+
+    add("=== Testes Realizados ===");
+    aeronave.testes.forEach((t) => {
+      add(`• Teste ${t.id_tes}: ${t.tipo} — Resultado: ${t.resultado}`);
+    });
+
+    const lines = doc.splitTextToSize(conteudo, 540);
+
+    let y = 40;
+    const lineHeight = 16;
+    const pageHeight = doc.internal.pageSize.height - 40;
+
+    lines.forEach((linha: any) => {
+      if (y > pageHeight) {
+        doc.addPage();
+        y = 40;
+      }
+      doc.text(linha, 40, y);
+      y += lineHeight;
+    });
 
     doc.save(`relatorio_${aeronave.codigo}_${form.dataEntrega}.pdf`);
     onClose();

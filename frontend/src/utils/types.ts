@@ -45,6 +45,7 @@ export interface Etapa{
 }
 
 export interface Teste{
+  id_tes: number
   tipo: TipoTeste
   resultado: ResultadoTeste
 }
