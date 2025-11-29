@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { TipoAeronave } from "../../../../utils/enums";
+import api from "../../../../utils/api";
 
 interface Props {
+  refetch: () => void
   show: boolean;
   onClose: () => void;
 }
 
-export function ModalCadastroAeronave({ show, onClose }: Props) {
+export function ModalCadastroAeronave({ refetch, show, onClose }: Props) {
   const initialForm = {
     codigo: "",
     modelo: "",
-    tipo: "Comercial",
+    tipo: TipoAeronave.Comercial,
     capacidade: "",
     alcance: "",
   };
@@ -34,9 +37,18 @@ export function ModalCadastroAeronave({ show, onClose }: Props) {
     }));
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log("Cadastrar a aeronave", form);
+    try {
+      const res = await api.post("/aeronave", form)
+
+      refetch()
+      alert(res.data.mensagem)
+
+    } catch (error: any) {
+      console.error(error.message)
+      alert(error.response.data.erro)
+    }
     handleClose();
   }
 
@@ -85,8 +97,8 @@ export function ModalCadastroAeronave({ show, onClose }: Props) {
               onChange={handleChange}
               required
             >
-              <option value="Comercial">Comercial</option>
-              <option value="Militar">Militar</option>
+              <option value={TipoAeronave.Comercial}>Comercial</option>
+              <option value={TipoAeronave.Militar}>Militar</option>
             </Form.Select>
           </Form.Group>
 

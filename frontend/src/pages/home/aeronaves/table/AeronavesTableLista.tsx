@@ -1,18 +1,17 @@
 import { useMemo } from "react";
 import { useReactTable, getCoreRowModel, getFilteredRowModel, flexRender, type ColumnDef } from "@tanstack/react-table";
 import { normalizarTexto } from "../../../../utils/coisas";
-import dados from "../../../../dadosTeste.json";
 import type { Aeronave } from "../../../../utils/types";
 import { useNavigate } from "react-router-dom";
 
 interface props{
+  aeronaves: Aeronave[] | null
   search: string
   filterTipo: string
 }
 
-export function AeronavesTableLista({search, filterTipo}: props) {
+export function AeronavesTableLista({ aeronaves, search, filterTipo}: props) {
   const navigate = useNavigate();
-  const aeronaves: Aeronave[] = dados.aeronaves as Aeronave[];
 
   const columns = useMemo<ColumnDef<Aeronave>[]>(
     () => [
@@ -26,7 +25,7 @@ export function AeronavesTableLista({search, filterTipo}: props) {
   );
 
   const filteredData = useMemo(() => {
-    return aeronaves.filter((a) => {
+    return aeronaves?.filter((a) => {
       const matchSearch =
         normalizarTexto(a.codigo).includes(normalizarTexto(search)) ||
         normalizarTexto(a.modelo).includes(normalizarTexto(search));
@@ -36,7 +35,7 @@ export function AeronavesTableLista({search, filterTipo}: props) {
         a.tipo === filterTipo;
 
       return matchSearch && matchTipo;
-    });
+    }) ?? [];
   }, [aeronaves, search, filterTipo]);
 
   const table = useReactTable({

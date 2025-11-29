@@ -1,18 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AeronavesTableColtrols } from "./AeronavesTableControls";
 import { AeronavesTableLista } from "./AeronavesTableLista";
 import { ModalCadastroAeronave } from "../modals/ModalCadastroAeronave";
 import { useAuth } from "../../../../hooks/useAuth";
 import { Navigate } from "react-router-dom";
 import { NivelPermissao } from "../../../../utils/enums";
+import api from "../../../../utils/api";
+import type { Aeronave } from "../../../../utils/types";
 
 export default function AeronavesTable(){
+  const [ aeronaves, setAeronaves] = useState<Aeronave[] | null>(null)
   const [search, setSearch] = useState("");
   const [filterTipo, setFilterTipo] = useState("");
   const [showModal, setShowModal] = useState(false)
   const { user } = useAuth()
 
   if (!user) return <Navigate to={"/login"} replace />
+
+  async function carregarAeronave() {
+    try {
+      const res = await api.get("/aeronave")
+
+      setAeronaves(res.data.aeronaves)
+    } catch (error: any) {
+      console.error(error.message)
+      alert(error.response.data.erro)
+    }
+  }
+
+  useEffect(() => {
+    carregarAeronave()
+  }, [])
 
   return(
     <>
@@ -29,11 +47,11 @@ export default function AeronavesTable(){
           </div>
         </div>
         <div className={`w-100 mt-3 table-responsive`}>
-          <AeronavesTableLista search={search} filterTipo={filterTipo} />
+          <AeronavesTableLista aeronaves={aeronaves} search={search} filterTipo={filterTipo} />
         </div>
       </div>
       {user.nivel_permissao !== NivelPermissao.Operador && (
-        <ModalCadastroAeronave show={showModal} onClose={() => setShowModal(false)}/>
+        <ModalCadastroAeronave refetch={carregarAeronave} show={showModal} onClose={() => setShowModal(false)}/>
       )}
     </>
   )

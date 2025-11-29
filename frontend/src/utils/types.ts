@@ -48,6 +48,7 @@ export interface Teste{
 }
 
 export interface Aeronave{
+  id_aero: number
   codigo: string
   modelo: string
   tipo: TipoAeronave
