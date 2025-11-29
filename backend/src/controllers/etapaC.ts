@@ -75,7 +75,7 @@ export const etapaC = {
       const fim = performance.now();
 
       return res.status(200).json({
-        mensagem: "Funcionários adicionads na etapa com sucesso",
+        mensagem: "Funcionários adicionados na etapa com sucesso",
         processingTime: (fim - inicio).toFixed(2) + " ms"
       });
 
